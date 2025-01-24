@@ -8,11 +8,13 @@ class AppTexts {
   static HomeScreenTexts home = HomeScreenTexts();
   // Controllers
   static ControllersText controllers = ControllersText();
+  // Utils
+  static UtilsString utils = UtilsString();
 }
 
 class LoginScreenTexts {
   final String loginButton = 'Accedi';
-  final String loginAppBarTitle= 'Accedi';
+  final String loginAppBarTitle = 'Accedi';
   final String forgotPassword = 'Password dimenticata?';
   final String createAccount = 'Non hai ancora un account? Registrati';
 }
@@ -21,12 +23,16 @@ class RegisterScreenTexts {
   final String registerAppBarTitle = 'Registrati';
   final String registerButton = 'Registrati';
   final String alreadyHaveAccount = 'Hai già un account? Accedi';
+  final String passErrMessage = 'Le password non corrispondono';
   final String textInfo1 = 'Credenziali di accesso al profilo.';
-  final String textInfo2 = 'Questi dati verranno visualizzati dagli altri utenti.';
+  final String textInfo2 ='Questi dati verranno visualizzati dagli altri utenti.';
+  final String succRegMessagge = 'Registrazione avvenuta con successo!';
+  final String errRegMessagge = 'Errore durante la registrazione';
 }
 
 class HomeScreenTexts {
   final String logoutButton = 'Esci';
+  final String homeTitle = 'Home';
   final String welcomeMessage = 'Benvenuto nella tua Home!';
 }
 
@@ -48,3 +54,6 @@ class ControllersText {
   final String numberError = 'Numero telefonico non valido (aggiungi prefisso)';
 }
 
+class UtilsString {
+  final String photoExampleUrl = 'https://example.com/photo.jpg';
+}

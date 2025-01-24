@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:servifino/services/auth_service.dart';
 import 'package:servifino/utils/app_routes.dart';
-
 import '../../providers/user_provider.dart';
 import '../../utils/app_texts.dart';
 
@@ -34,7 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Le password non corrispondono!')),
+        SnackBar(content: Text(AppTexts.register.passErrMessage)),
       );
       return;
     }
@@ -45,30 +44,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     try {
       // Chiamata al provider per registrare l'utente
+      final authService = AuthService();
       final userProvider = Provider.of<UserProvider>(context, listen: false);
-
-      bool isRegistered = await userProvider.registerUser(
+      final userJson = await authService.registerUser(
         email: email,
         password: password,
         displayName: displayName,
         phoneNumber: phoneNumber,
-        photoURL: 'https://example.com/photo.jpg',
+        photoURL: AppTexts.utils.photoExampleUrl,
       );
 
-      if (isRegistered) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registrazione avvenuta con successo!')),
+      if (userJson != null) {
+        // Carica l'utente nel provider usando il JSON ricevuto
+        FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
         );
-        Navigator.pushReplacementNamed(context, '/login'); // Naviga alla login
+        await userProvider.fetchUserDataWithJson(userJson);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+           SnackBar(content: Text(AppTexts.register.succRegMessagge)),
+        );
+        Navigator.pushReplacementNamed(context, AppRoutes.home);
+        // Naviga alla login
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Errore durante la registrazione')),
-        );
+        throw();
       }
     } catch (e) {
       print('Errore: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Errore durante la registrazione')),
+         SnackBar(content: Text(AppTexts.register.errRegMessagge)),
       );
     } finally {
       setState(() {
@@ -97,7 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 decoration:  InputDecoration(
                     labelText: AppTexts.controllers.email,
                     hintText: AppTexts.controllers.emailHint,
-                    prefixIcon: Icon(Icons.mail)),
+                    prefixIcon: const Icon(Icons.mail)),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return AppTexts.controllers.emailError;
@@ -111,7 +116,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 decoration: InputDecoration(
                     labelText: AppTexts.controllers.password,
                     hintText: AppTexts.controllers.passwordHint,
-                    prefixIcon: Icon(Icons.password)),
+                    prefixIcon: const Icon(Icons.password)),
                 validator: (value) {
                   if (value == null || value.isEmpty || value.length < 6) {
                     return AppTexts.controllers.passwordError;
@@ -125,7 +130,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 decoration:  InputDecoration(
                     labelText: AppTexts.controllers.confPassword,
                     hintText: AppTexts.controllers.confPasswordHint,
-                    prefixIcon: Icon(Icons.password_rounded)),
+                    prefixIcon: const Icon(Icons.password_rounded)),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return AppTexts.controllers.confPasswordError;
@@ -140,7 +145,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 decoration:  InputDecoration(
                     labelText: AppTexts.controllers.displayName,
                     hintText: AppTexts.controllers.displayNameHint,
-                    prefixIcon: Icon(Icons.person)),
+                    prefixIcon: const Icon(Icons.person)),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return AppTexts.controllers.displayNameError;
@@ -154,7 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 decoration:  InputDecoration(
                   labelText: AppTexts.controllers.number,
                   hintText: AppTexts.controllers.numberHint,
-                  prefixIcon: Icon(Icons.phone),
+                  prefixIcon: const Icon(Icons.phone),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {

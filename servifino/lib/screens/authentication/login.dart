@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Carica i dati dell'utente e aggiornali nel provider
       final userProvider = Provider.of<UserProvider>(context, listen: false);
-      userProvider.fetchUserData(uid);
+      userProvider.fetchUserDataWithUid(uid);
 
       // Naviga alla HomeScreen
       Navigator.pushReplacementNamed(context, AppRoutes.home);
@@ -50,11 +50,13 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: AppTexts.controllers.email),
+              decoration:
+                  InputDecoration(labelText: AppTexts.controllers.email),
             ),
             TextField(
               controller: _passwordController,
-              decoration:  InputDecoration(labelText: AppTexts.controllers.password),
+              decoration:
+                  InputDecoration(labelText: AppTexts.controllers.password),
               obscureText: true,
             ),
             const SizedBox(height: 20),
@@ -67,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
             ElevatedButton(
               onPressed: login,
-              child:  Text(AppTexts.login.loginButton),
+              child: Text(AppTexts.login.loginButton),
             ),
             TextButton(
               onPressed: () {

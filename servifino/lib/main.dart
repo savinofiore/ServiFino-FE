@@ -9,8 +9,10 @@ import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'screens/home.dart';
 import 'screens/authentication/login.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
+  await dotenv.load(fileName: ".env.production");
   // Assicurati che il binding di Flutter sia inizializzato
   WidgetsFlutterBinding.ensureInitialized();
   // Inizializza Firebase

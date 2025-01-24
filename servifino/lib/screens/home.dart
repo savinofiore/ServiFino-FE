@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:servifino/providers/user_provider.dart';
 import 'package:servifino/utils/app_routes.dart';
+import 'package:servifino/utils/app_texts.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -11,7 +12,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home"),
+        title: Text(AppTexts.home.homeTitle),
         actions: [
           IconButton(
             onPressed: () {

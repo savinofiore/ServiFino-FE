@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:servifino/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:servifino/utils/app_routes.dart';
 
 class AuthWrapper extends StatelessWidget {
   @override
@@ -19,14 +20,14 @@ class AuthWrapper extends StatelessWidget {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (snapshot.hasData) {
             // Recupera i dati dell'utente e naviga verso la Home solo se non ci sei già
-            userProvider.fetchUserData(snapshot.data!.uid);
-            if (ModalRoute.of(context)?.settings.name != '/home') {
-              Navigator.pushReplacementNamed(context, '/home');
+            userProvider.fetchUserDataWithUid(snapshot.data!.uid);
+            if (ModalRoute.of(context)?.settings.name != AppRoutes.home) {
+              Navigator.pushReplacementNamed(context, AppRoutes.home);
             }
           } else {
             // Naviga verso il Login solo se non ci sei già
-            if (ModalRoute.of(context)?.settings.name != '/login') {
-              Navigator.pushReplacementNamed(context, '/login');
+            if (ModalRoute.of(context)?.settings.name != AppRoutes.login) {
+              Navigator.pushReplacementNamed(context, AppRoutes.login);
             }
           }
         });

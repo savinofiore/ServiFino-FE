@@ -39,6 +39,19 @@ class UserModel {
     );
   }
 
+// Metodo per creare un UserModel da JSON
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      uid: json['uid'], // Assumi che il backend restituisca l'UID
+      email: json['email'],
+      displayName: json['displayName'],
+      phoneNumber: json['phoneNumber'],
+      photoURL: json['photoURL'],
+      disabled: json['disabled'],
+      assignment: json['assignment'],
+    );
+  }
+
   // Converte l'oggetto UserModel in una mappa per Firestore
   Map<String, dynamic> toMap() {
     return {
