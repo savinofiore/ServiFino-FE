@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:servifino/auth_router_wrapper.dart';
 import 'package:servifino/providers/user_provider.dart';
 import 'package:servifino/screens/authentication/register.dart';
+import 'package:servifino/utils/app_routes.dart';
+import 'package:servifino/utils/app_texts.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'screens/home.dart';
@@ -25,19 +27,19 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => UserProvider(),
       child: MaterialApp(
-        title: 'ServiFino',
+        title: AppTexts.title,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) =>
+          AppRoutes.authWrapper: (context) =>
               AuthWrapper(), // Definisci la rotta principale (autenticazione)
-          '/home': (context) => HomeScreen(), // La rotta per la home screen
-          '/login': (context) => LoginScreen(), // La rotta per la login screen
-          '/register': (context) => RegisterScreen(),
+          AppRoutes.home: (context) => HomeScreen(), // La rotta per la home screen
+          AppRoutes.login: (context) => LoginScreen(), // La rotta per la login screen
+          AppRoutes.register: (context) => RegisterScreen(),
         }, // Questo controllerà la logica di login
       ),
     );
   }
-} test@test.test
+}

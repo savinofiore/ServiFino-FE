@@ -7,6 +7,7 @@ class UserModel {
   final String? phoneNumber;
   final String? photoURL;
   final bool disabled;
+  final bool assignment;
   //final int? age; // Nuovo campo
   //final String? address; // Nuovo campo
 
@@ -17,6 +18,7 @@ class UserModel {
     this.phoneNumber,
     this.photoURL,
     required this.disabled,
+    required this.assignment,
     //this.age,
     //this.address,
   });
@@ -31,6 +33,7 @@ class UserModel {
       phoneNumber: data['phoneNumber'],
       photoURL: data['photoURL'],
       disabled: data['disabled'],
+      assignment: data['assignment'],
       //age: data['age'],
       //address: data['address'],
     );
@@ -45,6 +48,7 @@ class UserModel {
       'phoneNumber': phoneNumber,
       'photoURL': photoURL,
       'disabled': disabled,
+      'assignment': assignment,
       //'age': age,
       //'address': address,
     };

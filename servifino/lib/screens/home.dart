@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:servifino/providers/user_provider.dart';
+import 'package:servifino/utils/app_routes.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -15,7 +16,7 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             onPressed: () {
               userProvider.logout;
-              Navigator.pushReplacementNamed(context, '/login');
+              Navigator.pushReplacementNamed(context, AppRoutes.login);
             },
             icon: const Icon(Icons.logout),
           )
@@ -30,6 +31,7 @@ class HomeScreen extends StatelessWidget {
                   Text('Welcome, ${user.displayName}'),
                   Text('Email: ${user.email}'),
                   Text('Phone: ${user.phoneNumber ?? "N/A"}'),
+                  Text('Assignment: ${user.assignment}'),
                   //Text('Age: ${user.age ?? "N/A"}'),
                 ],
               ),

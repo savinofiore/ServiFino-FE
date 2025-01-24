@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:servifino/utils/app_routes.dart';
+
+import '../../providers/user_provider.dart';
+import '../../utils/app_texts.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -10,7 +16,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  final TextEditingController _displayNameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
 
   bool _isLoading = false;
 
@@ -20,10 +29,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
     final confirmPassword = _confirmPasswordController.text.trim();
+    final displayName = _displayNameController.text.trim();
+    final phoneNumber = _phoneNumberController.text.trim();
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Le password non corrispondono!')),
+        const SnackBar(content: Text('Le password non corrispondono!')),
       );
       return;
     }
@@ -33,27 +44,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
 
     try {
-      // Crea un nuovo utente con Firebase
-      var user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      // Chiamata al provider per registrare l'utente
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+      bool isRegistered = await userProvider.registerUser(
         email: email,
         password: password,
+        displayName: displayName,
+        phoneNumber: phoneNumber,
+        photoURL: 'https://example.com/photo.jpg',
       );
-      print('User created ${user.user}');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registrazione avvenuta con successo!')),
-      );
-      Navigator.pushReplacementNamed(context, '/login'); // Naviga alla login
-    } on FirebaseAuthException catch (e) {
-      String errorMessage;
-      if (e.code == 'email-already-in-use') {
-        errorMessage = 'Questa email è già registrata.';
-      } else if (e.code == 'weak-password') {
-        errorMessage = 'La password è troppo debole.';
+
+      if (isRegistered) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Registrazione avvenuta con successo!')),
+        );
+        Navigator.pushReplacementNamed(context, '/login'); // Naviga alla login
       } else {
-        errorMessage = 'Si è verificato un errore: ${e.message}';
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Errore durante la registrazione')),
+        );
       }
+    } catch (e) {
+      print('Errore: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
+        const SnackBar(content: Text('Errore durante la registrazione')),
       );
     } finally {
       setState(() {
@@ -66,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        title: Text(AppTexts.register.registerAppBarTitle),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -75,13 +90,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Text(AppTexts.register.textInfo1),
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration:  InputDecoration(
+                    labelText: AppTexts.controllers.email,
+                    hintText: AppTexts.controllers.emailHint,
+                    prefixIcon: Icon(Icons.mail)),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Inserisci un\'email valida';
+                    return AppTexts.controllers.emailError;
                   }
                   return null;
                 },
@@ -89,10 +108,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: InputDecoration(
+                    labelText: AppTexts.controllers.password,
+                    hintText: AppTexts.controllers.passwordHint,
+                    prefixIcon: Icon(Icons.password)),
                 validator: (value) {
                   if (value == null || value.isEmpty || value.length < 6) {
-                    return 'La password deve avere almeno 6 caratteri';
+                    return AppTexts.controllers.passwordError;
                   }
                   return null;
                 },
@@ -100,26 +122,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
               TextFormField(
                 controller: _confirmPasswordController,
                 obscureText: true,
-                decoration: InputDecoration(labelText: 'Conferma Password'),
+                decoration:  InputDecoration(
+                    labelText: AppTexts.controllers.confPassword,
+                    hintText: AppTexts.controllers.confPasswordHint,
+                    prefixIcon: Icon(Icons.password_rounded)),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Conferma la tua password';
+                    return AppTexts.controllers.confPasswordError;
                   }
                   return null;
                 },
               ),
-              SizedBox(height: 16),
-              _isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : ElevatedButton(
-                onPressed: _register,
-                child: Text('Registrati'),
+              const SizedBox(height: 16),
+              Text(AppTexts.register.textInfo2),
+              TextFormField(
+                controller: _displayNameController,
+                decoration:  InputDecoration(
+                    labelText: AppTexts.controllers.displayName,
+                    hintText: AppTexts.controllers.displayNameHint,
+                    prefixIcon: Icon(Icons.person)),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return AppTexts.controllers.displayNameError;
+                  }
+                  return null;
+                },
               ),
+              TextFormField(
+                controller: _phoneNumberController,
+                keyboardType: TextInputType.number,
+                decoration:  InputDecoration(
+                  labelText: AppTexts.controllers.number,
+                  hintText: AppTexts.controllers.numberHint,
+                  prefixIcon: Icon(Icons.phone),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return AppTexts.controllers.numberError;
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : ElevatedButton(
+                      onPressed: _register,
+                      child:  Text(AppTexts.register.registerButton),
+                    ),
               TextButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/login');
+                  Navigator.pushReplacementNamed(context, AppRoutes.login);
                 },
-                child: Text('Hai già un account? Accedi'),
+                child:  Text(AppTexts.register.alreadyHaveAccount),
               ),
             ],
           ),

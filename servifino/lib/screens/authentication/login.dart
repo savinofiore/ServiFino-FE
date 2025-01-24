@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:servifino/providers/user_provider.dart';
 
+import '../../utils/app_routes.dart';
+import '../../utils/app_texts.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -30,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
       userProvider.fetchUserData(uid);
 
       // Naviga alla HomeScreen
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
     } catch (e) {
       print("Errore nel login: $e");
     }
@@ -39,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(title: Text(AppTexts.login.loginAppBarTitle)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -47,11 +50,11 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(labelText: AppTexts.controllers.email),
             ),
             TextField(
               controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
+              decoration:  InputDecoration(labelText: AppTexts.controllers.password),
               obscureText: true,
             ),
             const SizedBox(height: 20),
@@ -64,13 +67,13 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
             ElevatedButton(
               onPressed: login,
-              child: const Text('Sign In'),
+              child:  Text(AppTexts.login.loginButton),
             ),
             TextButton(
               onPressed: () {
-                Navigator.pushReplacementNamed(context, '/register');
+                Navigator.pushReplacementNamed(context, AppRoutes.register);
               },
-              child: const Text('Don\'t have an account? Register'),
+              child: Text(AppTexts.login.createAccount),
             ),
           ],
         ),
