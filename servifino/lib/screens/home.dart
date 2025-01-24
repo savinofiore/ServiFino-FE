@@ -16,8 +16,12 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              userProvider.logout;
-              Navigator.pushReplacementNamed(context, AppRoutes.login);
+              try {
+                userProvider.logout();
+                Navigator.pushReplacementNamed(context, AppRoutes.login);
+              } catch (e) {
+                print(e);
+              }
             },
             icon: const Icon(Icons.logout),
           )
