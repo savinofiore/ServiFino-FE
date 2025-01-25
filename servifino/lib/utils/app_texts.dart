@@ -54,6 +54,9 @@ class ControllersText {
   final String number = 'Numero di telefono';
   final String numberHint = 'Inserisci il tuo numero di telefono';
   final String numberError = 'Numero telefonico non valido (aggiungi prefisso)';
+  final String editProfileBtn = 'Modifica Profilo';
+  final String settingBtn = 'Impostazioni';
+  final String logoutBtn = 'Disconnetti';
 }
 
 class UtilsString {

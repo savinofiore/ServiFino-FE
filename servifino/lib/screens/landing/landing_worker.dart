@@ -6,9 +6,10 @@ import '../../models/UserModel.dart';
 import '../../utils/app_texts.dart';
 
 class LandingWorker extends StatelessWidget {
+
   late UserModel? user;
-  //final UserProvider userProvider;
   final List<Widget> _pages;
+
   LandingWorker({
     super.key,
     required this.user,
@@ -20,14 +21,12 @@ class LandingWorker extends StatelessWidget {
 
   final ValueNotifier<int> _selectedIndex = ValueNotifier<int>(1);
 
-
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title:
-            Text('${user?.displayName.toString()} ${user?.work.toString()}'),
+            Text('${AppTexts.title} ${user?.work.toString()}'),
       ),
       body: ValueListenableBuilder<int>(
         valueListenable: _selectedIndex,
