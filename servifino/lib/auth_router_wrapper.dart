@@ -21,13 +21,13 @@ class AuthWrapper extends StatelessWidget {
           if (snapshot.hasData) {
             // Recupera i dati dell'utente e naviga verso la Home solo se non ci sei già
             userProvider.fetchUserDataWithUid(snapshot.data!.uid);
-            if (ModalRoute.of(context)?.settings.name != AppRoutes.home) {
-              Navigator.pushReplacementNamed(context, AppRoutes.home);
+            if (ModalRoute.of(context)?.settings.name != AppRoutes.landing) {
+              Navigator.pushReplacementNamed(context, AppRoutes.landing);
             }
           } else {
             // Naviga verso il Login solo se non ci sei già
-            if (ModalRoute.of(context)?.settings.name != AppRoutes.login) {
-              Navigator.pushReplacementNamed(context, AppRoutes.login);
+            if (ModalRoute.of(context)?.settings.name != AppRoutes.auth.login) {
+              Navigator.pushReplacementNamed(context, AppRoutes.auth.login);
             }
           }
         });

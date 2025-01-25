@@ -22,6 +22,7 @@ class AuthService {
         'photoURL': photoURL,
         'disabled': false,
         'assignment': false,
+        'isOwner' : false,
       });
 
       final response = await http.post(

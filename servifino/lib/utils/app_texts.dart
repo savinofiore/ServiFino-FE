@@ -4,12 +4,14 @@ class AppTexts {
   static LoginScreenTexts login = LoginScreenTexts();
   // Register Screen
   static RegisterScreenTexts register = RegisterScreenTexts();
-  // Home Screen
-  static HomeScreenTexts home = HomeScreenTexts();
+  // Landing Screen
+  static LandingScreenTexts landing = LandingScreenTexts();
   // Controllers
   static ControllersText controllers = ControllersText();
   // Utils
   static UtilsString utils = UtilsString();
+  // BottomBar
+static BottomBarTexts bottomBarTexts = BottomBarTexts();
 }
 
 class LoginScreenTexts {
@@ -30,9 +32,9 @@ class RegisterScreenTexts {
   final String errRegMessagge = 'Errore durante la registrazione';
 }
 
-class HomeScreenTexts {
+class LandingScreenTexts {
   final String logoutButton = 'Esci';
-  final String homeTitle = 'Home';
+  final String landingTitle = 'Home';
   final String welcomeMessage = 'Benvenuto nella tua Home!';
 }
 
@@ -56,4 +58,10 @@ class ControllersText {
 
 class UtilsString {
   final String photoExampleUrl = 'https://example.com/photo.jpg';
+}
+
+class BottomBarTexts {
+  final String firstIconText = 'Storico';
+  final String secondIconText = 'Home';
+  final String thirdIconText = 'Profilo';
 }

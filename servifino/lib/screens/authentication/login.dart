@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
       userProvider.fetchUserDataWithUid(uid);
 
       // Naviga alla HomeScreen
-      Navigator.pushReplacementNamed(context, AppRoutes.home);
+      Navigator.pushReplacementNamed(context, AppRoutes.landing);
     } catch (e) {
       print("Errore nel login: $e");
     }
@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.pushReplacementNamed(context, AppRoutes.register);
+                Navigator.pushReplacementNamed(context, AppRoutes.auth.register);
               },
               child: Text(AppTexts.login.createAccount),
             ),

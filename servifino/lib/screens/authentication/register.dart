@@ -65,7 +65,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
            SnackBar(content: Text(AppTexts.register.succRegMessagge)),
         );
-        Navigator.pushReplacementNamed(context, AppRoutes.home);
+        Navigator.pushReplacementNamed(context, AppRoutes.landing);
         // Naviga alla login
       } else {
         throw();
@@ -177,7 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
               TextButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.login);
+                  Navigator.pushReplacementNamed(context, AppRoutes.auth.login);
                 },
                 child:  Text(AppTexts.register.alreadyHaveAccount),
               ),

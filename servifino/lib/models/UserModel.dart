@@ -8,6 +8,8 @@ class UserModel {
   final String? photoURL;
   final bool disabled;
   final bool assignment;
+  final String? work;
+  final bool isOwner;
   //final int? age; // Nuovo campo
   //final String? address; // Nuovo campo
 
@@ -19,6 +21,8 @@ class UserModel {
     this.photoURL,
     required this.disabled,
     required this.assignment,
+    this.work,
+    required this.isOwner,
     //this.age,
     //this.address,
   });
@@ -34,6 +38,8 @@ class UserModel {
       photoURL: data['photoURL'],
       disabled: data['disabled'],
       assignment: data['assignment'],
+      work: data['work'],
+      isOwner: data['isOwner'],
       //age: data['age'],
       //address: data['address'],
     );
@@ -49,6 +55,8 @@ class UserModel {
       photoURL: json['photoURL'],
       disabled: json['disabled'],
       assignment: json['assignment'],
+      work: json['work'],
+      isOwner: json['isOwner'],
     );
   }
 
@@ -62,6 +70,8 @@ class UserModel {
       'photoURL': photoURL,
       'disabled': disabled,
       'assignment': assignment,
+      'work': work,
+      'isOwner': isOwner,
       //'age': age,
       //'address': address,
     };
