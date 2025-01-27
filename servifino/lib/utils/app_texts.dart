@@ -57,6 +57,10 @@ class ControllersText {
   final String editProfileBtn = 'Modifica Profilo';
   final String settingBtn = 'Impostazioni';
   final String logoutBtn = 'Disconnetti';
+  final String logoutBtnTxt1 = 'Conferma logout';
+  final String logoutBtnTxt2 = 'Sei sicuro di voler effettuare il logout?';
+  final String cancel = 'Annulla';
+  final String confirm = 'Conferma';
 }
 
 class UtilsString {

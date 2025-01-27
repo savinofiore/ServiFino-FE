@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:servifino/utils/app_routes.dart';
 import 'package:servifino/utils/app_texts.dart';
 import '../../models/UserModel.dart';
+import '../../providers/user_provider.dart';
 
 class ProfileWorker extends StatelessWidget {
   final UserModel? user;
@@ -86,7 +89,6 @@ class ProfileWorker extends StatelessWidget {
                   },
                 ),
                 const Divider(),
-
                 // Settings
                 ListTile(
                   leading: const Icon(Icons.settings, color: Colors.grey),
@@ -103,7 +105,34 @@ class ProfileWorker extends StatelessWidget {
                   title: Text(AppTexts.controllers.logoutBtn),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
-                    // Handle logout action
+                    // Mostra il popup di conferma
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title:  Text(AppTexts.controllers.logoutBtnTxt1),
+                          content:  Text(AppTexts.controllers.logoutBtnTxt2),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Chiudi il popup
+                              },
+                              child:  Text(AppTexts.controllers.cancel),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                // Richiama il logout dal provider
+                                final userProvider = Provider.of<UserProvider>(context, listen: false);
+                                userProvider.logout();
+                                Navigator.of(context).pop(); // Chiudi il popup
+                                Navigator.of(context).pushReplacementNamed(AppRoutes.auth.login);
+                              },
+                              child:  Text(AppTexts.controllers.confirm),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                 ),
                 const Divider(),
