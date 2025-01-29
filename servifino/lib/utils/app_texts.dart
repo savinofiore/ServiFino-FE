@@ -73,6 +73,7 @@ class ControllersText {
   final String logoutBtnTxt2 = 'Sei sicuro di voler effettuare il logout?';
   final String editBtnTxt1 = 'Conferma modifiche';
   final String editBtnTxt2 = 'Sei sicuro di voler confermare le tue modifiche?';
+  final String errorEditTxt1 = 'Errore durante il salvataggio delle modifiche';
   final String cancel = 'Annulla';
   final String confirm = 'Conferma';
   final String save = 'Salva';

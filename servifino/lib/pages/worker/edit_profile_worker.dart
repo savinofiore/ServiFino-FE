@@ -31,7 +31,7 @@ class EditProfileScreen extends StatelessWidget {
         );
         Navigator.pushReplacementNamed(context, AppRoutes.landing);
       } else {
-        throw 'Errore durante il salvataggio: ${statusCode}';
+        throw '${AppTexts.controllers.errorEditTxt1}: ${statusCode}';
       }
     } catch (e) {
       // Gestisci l'errore e mostra un messaggio all'utente
