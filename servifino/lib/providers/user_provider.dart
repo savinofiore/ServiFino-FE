@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 
 class UserProvider with ChangeNotifier {
   UserModel? _user;
-  final String _userCollection = '';
+  //String url = ;
+  final String _userCollection = dotenv.env['USER_COLLECTION'] ?? '';
 
   UserModel? get user => _user;
 
@@ -45,13 +46,6 @@ class UserProvider with ChangeNotifier {
     try {
 
       String url = dotenv.env['UPDATE_USER_ENDPOINT'] ?? '';
-      /*
-      // Aggiorna l'utente su Firestore
-      await FirebaseFirestore.instance
-          .collection(_userCollection)
-          .doc(updatedUser.uid)
-          .update(updatedUser.toMap());*/
-
       final Map<String, dynamic> requestBody = {
         'user': {
           'uid': user!.uid, // Assicurati di avere l'UID dell'utente

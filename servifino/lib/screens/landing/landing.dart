@@ -25,6 +25,6 @@ class LandingScreen extends StatelessWidget {
         ? const LandingOwner()
         : user?.assignment == true
             ? LandingWorker(user: user, works: works,)
-            : const LandingAssignment();
+            : LandingAssignment(userProvider: userProvider, works: works,);
   }
 }

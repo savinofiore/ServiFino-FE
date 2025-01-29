@@ -133,13 +133,17 @@ class ProfileWorker extends StatelessWidget {
                         title: AppTexts.controllers.logoutBtnTxt1,
                         message: AppTexts.controllers.logoutBtnTxt2,
                         onConfirm: () {
-                      // Richiama il logout dal provider
-                      final userProvider =
-                          Provider.of<UserProvider>(context, listen: false);
-                      userProvider.logout();
-                      Navigator.of(context).pop(); // Chiudi il popup
-                      Navigator.of(context)
-                          .pushReplacementNamed(AppRoutes.auth.login);
+                      try {
+                        // Richiama il logout dal provider
+                        final userProvider =
+                            Provider.of<UserProvider>(context, listen: false);
+                        userProvider.logout();
+                        //Navigator.of(context).pop(); // Chiudi il popup
+                        Navigator.of(context)
+                            .pushReplacementNamed(AppRoutes.authWrapper);
+                      } catch (e) {
+                        print('Error $e');
+                      }
                     });
                   },
                 ),

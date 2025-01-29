@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:servifino/models/WorksModel.dart';
 import 'package:servifino/pages/worker/history_worker.dart';
 import 'package:servifino/pages/worker/home_worker.dart';
@@ -24,8 +25,11 @@ class LandingWorker extends StatelessWidget {
 
   final ValueNotifier<int> _selectedIndex = ValueNotifier<int>(1);
 
+
   @override
   Widget build(BuildContext context) {
+    String workToRemove = dotenv.env['WORK_TO_REMOVE'] ?? '';
+    works?.removeWhere((work) => work.id == workToRemove);
     return Scaffold(
       appBar: AppBar(
         title: Text(

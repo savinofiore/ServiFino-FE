@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:servifino/pages/worker/profile_worker.dart';
 
 class AppTexts {
@@ -40,6 +42,14 @@ class LandingScreenTexts {
   final String logoutButton = 'Esci';
   final String landingTitle = 'Home';
   final String welcomeMessage = 'Benvenuto nella tua Home!';
+  final String assignTitle = 'Configura profilo';
+  final String activityName ='Nome Locale';
+  final String selectWork ='Seleziona lavoro';
+  final String activityDescription ='Descrizione attività';
+  final String availabilty ='Disponibile per lavorare';
+  final String activityLocation ='Località attività';
+  final String activityWebSite ='Sito web attività';
+  final String activityNumber ='Contatto telefonico attività';
 }
 
 class EditProfileWorker {
@@ -77,6 +87,8 @@ class ControllersText {
   final String cancel = 'Annulla';
   final String confirm = 'Conferma';
   final String save = 'Salva';
+  final String successOperationMessage = 'Operazione effettuata con successo';
+  final String errorOperationMessage = 'Errore';
 }
 
 class UtilsString {
