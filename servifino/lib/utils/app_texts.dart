@@ -1,3 +1,5 @@
+import 'package:servifino/pages/worker/profile_worker.dart';
+
 class AppTexts {
   static const title = 'ServiFino';
   // Login Screen
@@ -11,7 +13,9 @@ class AppTexts {
   // Utils
   static UtilsString utils = UtilsString();
   // BottomBar
-static BottomBarTexts bottomBarTexts = BottomBarTexts();
+  static BottomBarTexts bottomBarTexts = BottomBarTexts();
+  //Profile
+static EditProfileWorker profile = EditProfileWorker();
 }
 
 class LoginScreenTexts {
@@ -38,10 +42,18 @@ class LandingScreenTexts {
   final String welcomeMessage = 'Benvenuto nella tua Home!';
 }
 
+class EditProfileWorker {
+  final String editProfileAppBarTitle = 'Modifica profilo';
+  final String successMessage = 'Modifica avvenuta con successo!';
+  final String  errorMessage = 'Errore nella modifica.';
+}
+
 class ControllersText {
   final String email = 'Email';
   final String emailHint = 'Inserisci la tua mail';
   final String emailError = 'Inserisci un\'email valida';
+  final String workHint = 'Inserisci la tua occupazione';
+  final String work = 'Occupazione';
   final String password = 'Password';
   final String passwordHint = 'Inserisci la tua password';
   final String passwordError = 'La password deve avere almeno 6 caratteri';
@@ -61,10 +73,13 @@ class ControllersText {
   final String logoutBtnTxt2 = 'Sei sicuro di voler effettuare il logout?';
   final String cancel = 'Annulla';
   final String confirm = 'Conferma';
+  final String save = 'Salva';
 }
 
 class UtilsString {
   final String photoExampleUrl = 'https://example.com/photo.jpg';
+  final String available = 'Disponibile';
+  final String notAvailable = 'Non disponibile';
 }
 
 class BottomBarTexts {
@@ -72,3 +87,5 @@ class BottomBarTexts {
   final String secondIconText = 'Home';
   final String thirdIconText = 'Profilo';
 }
+
+

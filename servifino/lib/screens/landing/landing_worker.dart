@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:servifino/models/WorksModel.dart';
 import 'package:servifino/pages/worker/history_worker.dart';
 import 'package:servifino/pages/worker/home_worker.dart';
 import 'package:servifino/pages/worker/profile_worker.dart';
@@ -8,15 +9,17 @@ import '../../utils/app_texts.dart';
 class LandingWorker extends StatelessWidget {
 
   late UserModel? user;
+  late List<WorkModel>? works;
   final List<Widget> _pages;
 
   LandingWorker({
     super.key,
     required this.user,
+    required this.works
   }) : _pages = [
-    HistoryWorker(user: user),
-    HomeWorker(user: user),
-    ProfileWorker(user: user),
+    HistoryWorker(user: user, works: works,),
+    HomeWorker(user: user, works: works),
+    ProfileWorker(user: user, works: works),
   ];
 
   final ValueNotifier<int> _selectedIndex = ValueNotifier<int>(1);

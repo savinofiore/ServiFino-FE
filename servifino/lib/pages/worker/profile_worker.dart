@@ -3,14 +3,18 @@ import 'package:provider/provider.dart';
 import 'package:servifino/utils/app_routes.dart';
 import 'package:servifino/utils/app_texts.dart';
 import '../../models/UserModel.dart';
+import '../../models/WorksModel.dart';
 import '../../providers/user_provider.dart';
+import 'edit_profile_worker.dart';
 
 class ProfileWorker extends StatelessWidget {
-  final UserModel? user;
+  late UserModel? user;
+  late List<WorkModel>? works;
 
   ProfileWorker({
     super.key,
     required this.user,
+    required this.works,
   });
 
   @override
@@ -69,6 +73,15 @@ class ProfileWorker extends StatelessWidget {
                     color: Colors.white70,
                   ),
                 ),
+                SizedBox(height: screenHeight * 0.005), // Distanza adattata
+                Text(
+                  user!.isAvailable != false ? AppTexts.utils.available : AppTexts.utils.notAvailable,
+                  style: TextStyle(
+                    fontSize:
+                        screenWidth * 0.03, // Ridotto per essere più compatto
+                    color: Colors.white70,
+                  ),
+                ),
               ],
             ),
           ),
@@ -85,6 +98,10 @@ class ProfileWorker extends StatelessWidget {
                   title: Text(AppTexts.controllers.editProfileBtn),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => EditProfileScreen(user: user, works: works,)),
+                    );
                     // Handle edit profile action
                   },
                 ),

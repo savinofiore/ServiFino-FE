@@ -4,7 +4,9 @@ import 'package:servifino/auth_router_wrapper.dart';
 import 'package:servifino/pages/worker/history_worker.dart';
 import 'package:servifino/pages/worker/home_worker.dart';
 import 'package:servifino/pages/worker/profile_worker.dart';
+import 'package:servifino/providers/edit_profile_worker_provider.dart';
 import 'package:servifino/providers/user_provider.dart';
+import 'package:servifino/providers/works_provider.dart';
 import 'package:servifino/screens/authentication/register.dart';
 import 'package:servifino/screens/landing/landing.dart';
 import 'package:servifino/utils/app_routes.dart';
@@ -22,16 +24,24 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // Avvia l'app
-  runApp(MyApp());
+  runApp(
+
+       MyApp(),
+
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => UserProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileEditProvider(user: null, works: null)),
+        ChangeNotifierProvider(create: (_) => WorksProvider()),
+      ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: AppTexts.title,
         theme: ThemeData(
           primarySwatch: Colors.blue,
@@ -46,16 +56,21 @@ class MyApp extends StatelessWidget {
               LoginScreen(), // La rotta per la login screen
           AppRoutes.auth.register: (context) => RegisterScreen(),
           AppRoutes.worker.home: (context) => HomeWorker(
-                user: null,
-              ),
+            user: null,
+            works: null,
+          ),
           AppRoutes.worker.profile: (context) => ProfileWorker(
-                user: null,
-              ),
+            user: null,
+            works: null,
+          ),
           AppRoutes.worker.history: (context) => HistoryWorker(
-                user: null,
-              ),
-        }, // Questo controllerà la logica di login
+            user: null,
+            works: null,
+          ),
+        },
       ),
     );
+
+
   }
 }

@@ -10,6 +10,7 @@ class UserModel {
   final bool assignment;
   final String? work;
   final bool isOwner;
+  final bool isAvailable;
   //final int? age; // Nuovo campo
   //final String? address; // Nuovo campo
 
@@ -23,6 +24,7 @@ class UserModel {
     required this.assignment,
     this.work,
     required this.isOwner,
+    required this.isAvailable,
     //this.age,
     //this.address,
   });
@@ -40,6 +42,7 @@ class UserModel {
       assignment: data['assignment'],
       work: data['work'],
       isOwner: data['isOwner'],
+      isAvailable: data['isAvailable'],
       //age: data['age'],
       //address: data['address'],
     );
@@ -57,6 +60,7 @@ class UserModel {
       assignment: json['assignment'],
       work: json['work'],
       isOwner: json['isOwner'],
+      isAvailable: json['isAvailable'],
     );
   }
 
@@ -72,6 +76,7 @@ class UserModel {
       'assignment': assignment,
       'work': work,
       'isOwner': isOwner,
+      'isAvailable': isAvailable
       //'age': age,
       //'address': address,
     };
