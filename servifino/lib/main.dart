@@ -25,19 +25,21 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-
-       MyApp(),
-
+    MyApp(),
   );
 }
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => ProfileEditProvider(user: null, works: null)),
+        ChangeNotifierProvider(
+            create: (_) => ProfileEditProvider(user: null, works: null)),
         ChangeNotifierProvider(create: (_) => WorksProvider()),
       ],
       child: MaterialApp(
@@ -56,21 +58,19 @@ class MyApp extends StatelessWidget {
               LoginScreen(), // La rotta per la login screen
           AppRoutes.auth.register: (context) => RegisterScreen(),
           AppRoutes.worker.home: (context) => HomeWorker(
-            user: null,
-            works: null,
-          ),
+                user: null,
+                works: null,
+              ),
           AppRoutes.worker.profile: (context) => ProfileWorker(
-            user: null,
-            works: null,
-          ),
+                user: null,
+                works: null,
+              ),
           AppRoutes.worker.history: (context) => HistoryWorker(
-            user: null,
-            works: null,
-          ),
+                user: null,
+                works: null,
+              ),
         },
       ),
     );
-
-
   }
 }

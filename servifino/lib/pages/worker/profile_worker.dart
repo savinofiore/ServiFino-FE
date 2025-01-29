@@ -5,6 +5,7 @@ import 'package:servifino/utils/app_texts.dart';
 import '../../models/UserModel.dart';
 import '../../models/WorksModel.dart';
 import '../../providers/user_provider.dart';
+import '../../widgets/show_confirmation_dialog.dart';
 import 'edit_profile_worker.dart';
 
 class ProfileWorker extends StatelessWidget {
@@ -75,7 +76,9 @@ class ProfileWorker extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.005), // Distanza adattata
                 Text(
-                  user!.isAvailable != false ? AppTexts.utils.available : AppTexts.utils.notAvailable,
+                  user!.isAvailable != false
+                      ? AppTexts.utils.available
+                      : AppTexts.utils.notAvailable,
                   style: TextStyle(
                     fontSize:
                         screenWidth * 0.03, // Ridotto per essere più compatto
@@ -100,7 +103,11 @@ class ProfileWorker extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => EditProfileScreen(user: user, works: works,)),
+                      MaterialPageRoute(
+                          builder: (context) => EditProfileScreen(
+                                user: user,
+                                works: works,
+                              )),
                     );
                     // Handle edit profile action
                   },
@@ -122,34 +129,18 @@ class ProfileWorker extends StatelessWidget {
                   title: Text(AppTexts.controllers.logoutBtn),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
-                    // Mostra il popup di conferma
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title:  Text(AppTexts.controllers.logoutBtnTxt1),
-                          content:  Text(AppTexts.controllers.logoutBtnTxt2),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(); // Chiudi il popup
-                              },
-                              child:  Text(AppTexts.controllers.cancel),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                // Richiama il logout dal provider
-                                final userProvider = Provider.of<UserProvider>(context, listen: false);
-                                userProvider.logout();
-                                Navigator.of(context).pop(); // Chiudi il popup
-                                Navigator.of(context).pushReplacementNamed(AppRoutes.auth.login);
-                              },
-                              child:  Text(AppTexts.controllers.confirm),
-                            ),
-                          ],
-                        );
-                      },
-                    );
+                    showConfirmationDialog(context,
+                        title: AppTexts.controllers.logoutBtnTxt1,
+                        message: AppTexts.controllers.logoutBtnTxt2,
+                        onConfirm: () {
+                      // Richiama il logout dal provider
+                      final userProvider =
+                          Provider.of<UserProvider>(context, listen: false);
+                      userProvider.logout();
+                      Navigator.of(context).pop(); // Chiudi il popup
+                      Navigator.of(context)
+                          .pushReplacementNamed(AppRoutes.auth.login);
+                    });
                   },
                 ),
                 const Divider(),

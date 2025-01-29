@@ -81,4 +81,32 @@ class UserModel {
       //'address': address,
     };
   }
+
+  UserModel copyWith({
+    String? uid,
+    String? email,
+    String? displayName,
+    String? phoneNumber,
+    String? photoURL,
+    bool? disabled,
+    bool? assignment,
+    String? work,
+    bool? isOwner,
+    bool? isAvailable,
+  }) {
+    return UserModel(
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      displayName: displayName ?? this.displayName,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      photoURL: photoURL ?? this.photoURL,
+      disabled: disabled ?? this.disabled,
+      assignment: assignment ?? this.assignment,
+      work: work ?? this.work,
+      isOwner: isOwner ?? this.isOwner,
+      isAvailable: isAvailable ?? this.isAvailable,
+    );
+  }
+
+
 }

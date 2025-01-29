@@ -28,8 +28,9 @@ class LandingWorker extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text('${AppTexts.title} ${user?.work.toString()}'),
+        title: Text(
+          '${AppTexts.title} ${works?.firstWhere((work) => work.id == user?.work, orElse: () => WorkModel(id: '', name: '', description: '')).name}',
+        ),
       ),
       body: ValueListenableBuilder<int>(
         valueListenable: _selectedIndex,
