@@ -1,75 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../models/UserModel.dart';
-/*
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 class UserProvider with ChangeNotifier {
   UserModel? _user;
+  final String _userCollection = '';
 
   UserModel? get user => _user;
+
 
   // Funzione per popolare l'utente
   Future<void> fetchUserDataWithUid(String uid) async {
     try {
+
       // Ottieni i dati utente da Firestore
       DocumentSnapshot userDoc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
-
-      if (userDoc.exists) {
-        _user = UserModel.fromFirestore(userDoc);
-        notifyListeners(); // Notifica i listener quando lo stato cambia
-      }
-    } catch (e) {
-      print("Errore nel recupero dei dati utente: $e");
-    }
-  }
-
-  Future<void> fetchUserDataWithJson(Map<String, dynamic> userJson) async {
-    try {
-      // Creazione di un UserModel dal JSON ricevuto
-      _user = UserModel.fromJson(userJson);
-      notifyListeners();
-    } catch (e) {
-      print('Errore nel caricamento dei dati utente: $e');
-    }
-  }
-
-  // Funzione per settare l'utente manualmente
-  void setUser(UserModel user, String selectedWorkId, bool isAvailable) {
-    _user = _user?.copyWith(
-      displayName: user.displayName,
-      phoneNumber: user.phoneNumber,
-      work: selectedWorkId,
-      isAvailable: isAvailable,
-    );
-    notifyListeners();
-  }
-
-  void logout() async {
-    try {
-      // Effettua il logout da Firebase
-      await FirebaseAuth.instance.signOut();
-      // Resetta i dati utente locali
-      _user = null;
-      notifyListeners();
-    } catch (error) {
-      print('Errore durante il logout: $error');
-    }
-  }
-}
-*/
-
-class UserProvider with ChangeNotifier {
-  UserModel? _user;
-
-  UserModel? get user => _user;
-
-  // Funzione per popolare l'utente
-  Future<void> fetchUserDataWithUid(String uid) async {
-    try {
-      // Ottieni i dati utente da Firestore
-      DocumentSnapshot userDoc =
-      await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      await FirebaseFirestore.instance.collection(_userCollection).doc(uid).get();
 
       if (userDoc.exists) {
         _user = UserModel.fromFirestore(userDoc);
@@ -93,11 +43,30 @@ class UserProvider with ChangeNotifier {
   // Funzione per aggiornare l'utente
   Future<void> updateUser(UserModel updatedUser) async {
     try {
+
+      String url = dotenv.env['UPDATE_USER_ENDPOINT'] ?? '';
+      /*
       // Aggiorna l'utente su Firestore
       await FirebaseFirestore.instance
-          .collection('users')
+          .collection(_userCollection)
           .doc(updatedUser.uid)
-          .update(updatedUser.toMap());
+          .update(updatedUser.toMap());*/
+
+      final Map<String, dynamic> requestBody = {
+        'user': {
+          'uid': user!.uid, // Assicurati di avere l'UID dell'utente
+        },
+        'displayName': updatedUser.displayName,
+        'phoneNumber': updatedUser.phoneNumber,
+        'work': updatedUser.work,
+        'isAvailable': updatedUser.isAvailable,
+      };
+
+      final response = await http.post(
+        Uri.parse(url), // Sostituisci con l'URL del tuo backend
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestBody),
+      );
 
       // Aggiorna l'istanza locale dell'utente
       _user = updatedUser;
@@ -107,6 +76,53 @@ class UserProvider with ChangeNotifier {
       throw e; // Rilancia l'errore per gestirlo altrove
     }
   }
+
+
+
+
+/*
+  Future<int?> saveChanges(UserModel? user) async {
+
+    isLoading = true;
+    notifyListeners();
+    try {
+      // Dati da inviare al backend
+      final Map<String, dynamic> requestBody = {
+        'user': {
+          'uid': user!.uid, // Assicurati di avere l'UID dell'utente
+        },
+        'displayName': displayNameController.text,
+        'phoneNumber': phoneNumberController.text,
+        'work': selectedWorkId,
+        'isAvailable': isAvailable,
+      };
+      // Effettua la richiesta HTTP POST al backend
+      final response = await http.post(
+        Uri.parse(url), // Sostituisci con l'URL del tuo backend
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestBody),
+      );
+
+
+      return response.statusCode;
+    } catch (error) {
+      print('Error updating user: $error');
+    } finally {
+      isLoading = false;
+
+      notifyListeners();
+    }
+  }*/
+
+
+
+
+
+
+
+
+
+
 
   void logout() async {
     try {
