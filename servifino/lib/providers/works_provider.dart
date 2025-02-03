@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:servifino/models/WorksModel.dart';
 
-
 class WorksProvider with ChangeNotifier {
   List<WorkModel> _worksList = [];
   bool _isLoading = false;
@@ -17,14 +16,14 @@ class WorksProvider with ChangeNotifier {
 
     try {
       // Recupera i documenti dalla collezione 'works'
-      CollectionReference worksRef = FirebaseFirestore.instance.collection('works');
+      CollectionReference worksRef =
+          FirebaseFirestore.instance.collection('works');
       QuerySnapshot worksSnapshot = await worksRef.get();
 
       // Mappa i documenti a oggetti WorksModel
       _worksList = worksSnapshot.docs
           .map((doc) => WorkModel.fromFirestore(doc))
           .toList();
-
     } catch (e) {
       print('Errore nel recupero dei dati: $e');
       _worksList = [];
@@ -34,4 +33,3 @@ class WorksProvider with ChangeNotifier {
     }
   }
 }
-

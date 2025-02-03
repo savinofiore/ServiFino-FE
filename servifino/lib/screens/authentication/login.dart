@@ -41,43 +41,46 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(AppTexts.login.loginAppBarTitle)),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration:
-                  InputDecoration(labelText: AppTexts.controllers.email),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration:
-                  InputDecoration(labelText: AppTexts.controllers.password),
-              obscureText: true,
-            ),
-            const SizedBox(height: 20),
-            if (errorMessage.isNotEmpty) ...[
-              Text(
-                errorMessage,
-                style: const TextStyle(color: Colors.red),
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        appBar: AppBar(title: Text(AppTexts.login.loginAppBarTitle)),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                controller: _emailController,
+                decoration:
+                    InputDecoration(labelText: AppTexts.controllers.email),
+              ),
+              TextField(
+                controller: _passwordController,
+                decoration:
+                    InputDecoration(labelText: AppTexts.controllers.password),
+                obscureText: true,
               ),
               const SizedBox(height: 20),
+              if (errorMessage.isNotEmpty) ...[
+                Text(
+                  errorMessage,
+                  style: const TextStyle(color: Colors.red),
+                ),
+                const SizedBox(height: 20),
+              ],
+              ElevatedButton(
+                onPressed: login,
+                child: Text(AppTexts.login.loginButton),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, AppRoutes.auth.register);
+                },
+                child: Text(AppTexts.login.createAccount),
+              ),
             ],
-            ElevatedButton(
-              onPressed: login,
-              child: Text(AppTexts.login.loginButton),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, AppRoutes.auth.register);
-              },
-              child: Text(AppTexts.login.createAccount),
-            ),
-          ],
+          ),
         ),
       ),
     );

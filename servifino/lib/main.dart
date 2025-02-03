@@ -6,6 +6,7 @@ import 'package:servifino/pages/worker/home_worker.dart';
 import 'package:servifino/pages/worker/profile_worker.dart';
 import 'package:servifino/providers/edit_profile_worker_provider.dart';
 import 'package:servifino/providers/landing_assignment_provider.dart';
+import 'package:servifino/providers/register_provider.dart';
 import 'package:servifino/providers/user_provider.dart';
 import 'package:servifino/providers/works_provider.dart';
 import 'package:servifino/screens/authentication/register.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => RegisterProvider()),
         ChangeNotifierProvider(
             create: (_) => ProfileEditProvider(user: null, works: null)),
         ChangeNotifierProvider(create: (_) => WorksProvider()),

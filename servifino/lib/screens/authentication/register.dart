@@ -1,89 +1,25 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:servifino/services/auth_service.dart';
+import 'package:servifino/providers/register_provider.dart';
 import 'package:servifino/utils/app_routes.dart';
+import 'package:servifino/utils/app_texts.dart';
+import 'package:servifino/utils/request_errors.dart';
+
 import '../../providers/user_provider.dart';
-import '../../utils/app_texts.dart';
 
-class RegisterScreen extends StatefulWidget {
-  @override
-  _RegisterScreenState createState() => _RegisterScreenState();
-}
-
-class _RegisterScreenState extends State<RegisterScreen> {
+class RegisterScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-  final TextEditingController _displayNameController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
-
-  bool _isLoading = false;
-
-  Future<void> _register() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    final email = _emailController.text.trim();
-    final password = _passwordController.text.trim();
-    final confirmPassword = _confirmPasswordController.text.trim();
-    final displayName = _displayNameController.text.trim();
-    final phoneNumber = _phoneNumberController.text.trim();
-
-    if (password != confirmPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppTexts.register.passErrMessage)),
-      );
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      // Chiamata al provider per registrare l'utente
-      final authService = AuthService();
-      final userProvider = Provider.of<UserProvider>(context, listen: false);
-      final userJson = await authService.registerUser(
-        email: email,
-        password: password,
-        displayName: displayName,
-        phoneNumber: phoneNumber,
-        photoURL: AppTexts.utils.photoExampleUrl,
-      );
-
-      if (userJson != null) {
-        // Carica l'utente nel provider usando il JSON ricevuto
-        FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
-        await userProvider.fetchUserDataWithJson(userJson);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(content: Text(AppTexts.register.succRegMessagge)),
-        );
-        Navigator.pushReplacementNamed(context, AppRoutes.landing);
-        // Naviga alla login
-      } else {
-        throw();
-      }
-    } catch (e) {
-      print('Errore: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(content: Text(AppTexts.register.errRegMessagge)),
-      );
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    final registerProvider = context.read<RegisterProvider>();
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppTexts.register.registerAppBarTitle),
@@ -97,12 +33,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               Text(AppTexts.register.textInfo1),
               TextFormField(
-                controller: _emailController,
+                controller: registerProvider.emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration:  InputDecoration(
-                    labelText: AppTexts.controllers.email,
-                    hintText: AppTexts.controllers.emailHint,
-                    prefixIcon: const Icon(Icons.mail)),
+                decoration: InputDecoration(
+                  labelText: AppTexts.controllers.email,
+                  hintText: AppTexts.controllers.emailHint,
+                  prefixIcon: const Icon(Icons.mail),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return AppTexts.controllers.emailError;
@@ -111,12 +48,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               TextFormField(
-                controller: _passwordController,
+                controller: registerProvider.passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                    labelText: AppTexts.controllers.password,
-                    hintText: AppTexts.controllers.passwordHint,
-                    prefixIcon: const Icon(Icons.password)),
+                  labelText: AppTexts.controllers.password,
+                  hintText: AppTexts.controllers.passwordHint,
+                  prefixIcon: const Icon(Icons.password),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty || value.length < 6) {
                     return AppTexts.controllers.passwordError;
@@ -125,12 +63,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               TextFormField(
-                controller: _confirmPasswordController,
+                controller: registerProvider.confirmPasswordController,
                 obscureText: true,
-                decoration:  InputDecoration(
-                    labelText: AppTexts.controllers.confPassword,
-                    hintText: AppTexts.controllers.confPasswordHint,
-                    prefixIcon: const Icon(Icons.password_rounded)),
+                decoration: InputDecoration(
+                  labelText: AppTexts.controllers.confPassword,
+                  hintText: AppTexts.controllers.confPasswordHint,
+                  prefixIcon: const Icon(Icons.password_rounded),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return AppTexts.controllers.confPasswordError;
@@ -141,11 +80,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 16),
               Text(AppTexts.register.textInfo2),
               TextFormField(
-                controller: _displayNameController,
-                decoration:  InputDecoration(
-                    labelText: AppTexts.controllers.displayName,
-                    hintText: AppTexts.controllers.displayNameHint,
-                    prefixIcon: const Icon(Icons.person)),
+                controller: registerProvider.displayNameController,
+                decoration: InputDecoration(
+                  labelText: AppTexts.controllers.displayName,
+                  hintText: AppTexts.controllers.displayNameHint,
+                  prefixIcon: const Icon(Icons.person),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return AppTexts.controllers.displayNameError;
@@ -154,9 +94,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               TextFormField(
-                controller: _phoneNumberController,
+                controller: registerProvider.phoneNumberController,
                 keyboardType: TextInputType.number,
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                   labelText: AppTexts.controllers.number,
                   hintText: AppTexts.controllers.numberHint,
                   prefixIcon: const Icon(Icons.phone),
@@ -169,17 +109,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               const SizedBox(height: 16),
-              _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : ElevatedButton(
-                      onPressed: _register,
-                      child:  Text(AppTexts.register.registerButton),
-                    ),
+              if (registerProvider.isLoading)
+                const Center(child: CircularProgressIndicator())
+              else
+                ElevatedButton(
+                  onPressed: () async {
+                    log(registerProvider.emailController.text);
+
+                    registerProvider.isLoading = true;
+                    switch (await userProvider.registerUser(
+                        email: registerProvider.emailController.text.trim(),
+                        password: registerProvider.passwordController.text,
+                        displayName:
+                            registerProvider.displayNameController.text,
+                        phoneNumber:
+                            registerProvider.phoneNumberController.text,
+                        photoURL: AppTexts.utils.photoExampleUrl)) {
+                      case RequestError.done:
+                        log('User added successfully');
+                        break;
+                      case RequestError.error:
+                        log('User added errror');
+                        break;
+                    }
+                  },
+                  child: Text(AppTexts.register.registerButton),
+                ),
               TextButton(
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, AppRoutes.auth.login);
                 },
-                child:  Text(AppTexts.register.alreadyHaveAccount),
+                child: Text(AppTexts.register.alreadyHaveAccount),
               ),
             ],
           ),

@@ -1,7 +1,11 @@
+import 'dart:async';
+import 'dart:developer';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:servifino/utils/request_errors.dart';
 import '../models/UserModel.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -13,14 +17,14 @@ class UserProvider with ChangeNotifier {
 
   UserModel? get user => _user;
 
-
   // Funzione per popolare l'utente
   Future<void> fetchUserDataWithUid(String uid) async {
     try {
-
       // Ottieni i dati utente da Firestore
-      DocumentSnapshot userDoc =
-      await FirebaseFirestore.instance.collection(_userCollection).doc(uid).get();
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection(_userCollection)
+          .doc(uid)
+          .get();
 
       if (userDoc.exists) {
         _user = UserModel.fromFirestore(userDoc);
@@ -44,7 +48,6 @@ class UserProvider with ChangeNotifier {
   // Funzione per aggiornare l'utente
   Future<void> updateUser(UserModel updatedUser) async {
     try {
-
       String url = dotenv.env['UPDATE_USER_ENDPOINT'] ?? '';
       final Map<String, dynamic> requestBody = {
         'user': {
@@ -71,52 +74,32 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-
-
-
-/*
-  Future<int?> saveChanges(UserModel? user) async {
-
-    isLoading = true;
-    notifyListeners();
+  Future<RequestError> registerUser({
+    required String email,
+    required String password,
+    required String displayName,
+    required String phoneNumber,
+    required String photoURL,
+  }) async {
     try {
-      // Dati da inviare al backend
-      final Map<String, dynamic> requestBody = {
-        'user': {
-          'uid': user!.uid, // Assicurati di avere l'UID dell'utente
-        },
-        'displayName': displayNameController.text,
-        'phoneNumber': phoneNumberController.text,
-        'work': selectedWorkId,
-        'isAvailable': isAvailable,
-      };
-      // Effettua la richiesta HTTP POST al backend
-      final response = await http.post(
-        Uri.parse(url), // Sostituisci con l'URL del tuo backend
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(requestBody),
-      );
+      HttpsCallable callable =
+          FirebaseFunctions.instance.httpsCallable('createUser');
+      await callable.call({
+        "email": email,
+        "password": password,
+        "displayName": displayName,
+        "phoneNumber": phoneNumber,
+        "photoURL": photoURL
+      });
 
-
-      return response.statusCode;
-    } catch (error) {
-      print('Error updating user: $error');
+      return RequestError.done;
+    } catch (e) {
+      log('Error $e');
+      return RequestError.error;
     } finally {
-      isLoading = false;
-
       notifyListeners();
     }
-  }*/
-
-
-
-
-
-
-
-
-
-
+  }
 
   void logout() async {
     try {

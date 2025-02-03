@@ -1,0 +1,4 @@
+enum RequestError{
+  done,
+  error
+}

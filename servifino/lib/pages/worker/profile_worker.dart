@@ -9,8 +9,8 @@ import '../../widgets/show_confirmation_dialog.dart';
 import 'edit_profile_worker.dart';
 
 class ProfileWorker extends StatelessWidget {
-  late UserModel? user;
-  late List<WorkModel>? works;
+  final UserModel? user;
+  final List<WorkModel>? works;
 
   ProfileWorker({
     super.key,
