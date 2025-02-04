@@ -59,7 +59,7 @@ class ProfileEditProvider with ChangeNotifier {
         isAvailable: isAvailable,
       );
 
-      await userProvider.updateUser(updatedUser);
+      //await userProvider.updateUser(updatedUser);
 
       return 200; // Success
     } catch (e) {

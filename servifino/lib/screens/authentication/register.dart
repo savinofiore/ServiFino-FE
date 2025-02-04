@@ -114,7 +114,16 @@ class RegisterScreen extends StatelessWidget {
               else
                 ElevatedButton(
                   onPressed: () async {
-                    log(registerProvider.emailController.text);
+                   switch ( registerProvider.validateFields()){
+                     case RegistrationError.success:
+                       break;
+                     case RegistrationError.dismatchPassword:
+                       Fluttertoast.showToast(msg: 'Le password non corrispondono');
+                       return;
+                     case RegistrationError.error:
+                       Fluttertoast.showToast(msg: 'Errore improvviso');
+                      return;
+                   }
 
                     registerProvider.isLoading = true;
                     switch (await userProvider.registerUser(
@@ -126,9 +135,14 @@ class RegisterScreen extends StatelessWidget {
                             registerProvider.phoneNumberController.text,
                         photoURL: AppTexts.utils.photoExampleUrl)) {
                       case RequestError.done:
+                        Fluttertoast.showToast(msg: 'Utente registrato con successo!');
                         log('User added successfully');
+                         String? userUid = await userProvider.login(email: registerProvider.emailController.text.trim(), password: registerProvider.passwordController.text);
+                         await userProvider.fetchUserDataWithUid(userUid!);
+                        Navigator.pushReplacementNamed(context, AppRoutes.landing);
                         break;
                       case RequestError.error:
+                        Fluttertoast.showToast(msg: 'Errore nel processo di registrazione.');
                         log('User added errror');
                         break;
                     }

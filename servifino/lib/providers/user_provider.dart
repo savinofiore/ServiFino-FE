@@ -7,8 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:servifino/utils/request_errors.dart';
 import '../models/UserModel.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class UserProvider with ChangeNotifier {
   UserModel? _user;
@@ -46,7 +44,7 @@ class UserProvider with ChangeNotifier {
   }
 
   // Funzione per aggiornare l'utente
-  Future<void> updateUser(UserModel updatedUser) async {
+  /*Future<void> updateUser(UserModel updatedUser) async {
     try {
       String url = dotenv.env['UPDATE_USER_ENDPOINT'] ?? '';
       final Map<String, dynamic> requestBody = {
@@ -64,15 +62,13 @@ class UserProvider with ChangeNotifier {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(requestBody),
       );
-
-      // Aggiorna l'istanza locale dell'utente
       _user = updatedUser;
-      notifyListeners(); // Notifica i listener dell'aggiornamento
+      notifyListeners();
     } catch (e) {
-      print("Errore durante l'aggiornamento dell'utente: $e");
-      throw e; // Rilancia l'errore per gestirlo altrove
+      log("Errore durante l'aggiornamento dell'utente: $e");
+      throw e;
     }
-  }
+  }*/
 
   Future<RequestError> registerUser({
     required String email,
@@ -98,6 +94,24 @@ class UserProvider with ChangeNotifier {
       return RequestError.error;
     } finally {
       notifyListeners();
+    }
+  }
+
+  Future<String?> login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      String uid = userCredential.user!.uid;
+      return uid;
+    } catch (e) {
+      log("Errore nel login: $e");
+      return null;
     }
   }
 
