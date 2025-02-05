@@ -1,77 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import '../../models/UserModel.dart';
-/*
-class LandingAssignmentProvider with ChangeNotifier {
-  String? selectedWork;
-  bool isLoading = false;
-  String updateWorkerUrl = dotenv.env['UPDATE_WORKER_ENDPOINT'] ?? '';
-  String addOwnerUrl = dotenv.env['ADD_OWNER_ENDPOINT'] ?? '';
-
-  final Map<String, String> ownerDetails = {
-    'activityName': '',
-    'activityDescription': '',
-    'activityLocation': '',
-    'activityWebsite': '',
-    'activityNumber': '',
-  };
-
-  void setSelectedWork(String? work) {
-    selectedWork = work;
-    notifyListeners();
-  }
-
-  void updateOwnerDetail(String key, String value) {
-    ownerDetails[key] = value;
-    notifyListeners();
-  }
-
-  Future<void> submitForm(UserModel? user) async {
-    if (selectedWork == null) {
-      throw Exception('No work selected');
-    }
-
-    if (selectedWork == 'owner') {
-      // Prepare the data for the owner endpoint
-      final ownerData = {
-        'userUid': user!.uid,
-        'activityName': ownerDetails['activityName'],
-        'activityDescription': ownerDetails['activityDescription'],
-        'activityLocation': ownerDetails['activityLocation'],
-        'activityWebsite': ownerDetails['activityWebsite'],
-        'activityNumber': ownerDetails['activityNumber'],
-      };
-
-      // Call the addOwner endpoint
-      final response = await http.post(
-        Uri.parse(addOwnerUrl),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(ownerData),
-      );
-
-      if (response.statusCode != 201) {
-        throw Exception('Failed to add owner: ${response.body}');
-      }
-    } else {
-      // Call the addworker endpoint for other works
-      final response = await http.post(
-        Uri.parse(updateWorkerUrl),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'userUid': user!.uid,
-          'workType': selectedWork,
-        }),
-      );
-
-      if (response.statusCode != 201) {
-        throw Exception('Failed to assign work: ${response.body}');
-      }
-    }
-  }
-}
-*/
 
 class LandingAssignmentProvider with ChangeNotifier {
   String? selectedWork;
@@ -102,7 +30,12 @@ class LandingAssignmentProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> submitForm(UserModel? user) async {
+  void changeLoading(){
+    isLoading = ! isLoading;
+    notifyListeners();
+  }
+
+  /*Future<void> submitForm(UserModel? user) async {
     isLoading = true;
     notifyListeners();
 
@@ -110,6 +43,8 @@ class LandingAssignmentProvider with ChangeNotifier {
       if (selectedWork == null) {
         throw Exception('No work selected');
       }
+
+      /*
       if (selectedWork == 'owner') {
         // Prepare the data for the owner endpoint
         final ownerData = {
@@ -146,6 +81,10 @@ class LandingAssignmentProvider with ChangeNotifier {
         if (response.statusCode != 200) {
           throw Exception('Failed to update work: ${response.body}');
         }
+
+        */
+
+
       }
     } catch (e) {
       print('Error $e');
@@ -154,5 +93,5 @@ class LandingAssignmentProvider with ChangeNotifier {
       notifyListeners();
 
     }
-  }
+  }*/
 }

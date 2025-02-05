@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart';
 import 'package:servifino/utils/request_errors.dart';
 import '../models/UserModel.dart';
 
@@ -15,7 +17,9 @@ class UserProvider with ChangeNotifier {
 
   UserModel? get user => _user;
 
-  // Funzione per popolare l'utente
+  /*
+  * Fetch model session
+  * */
   Future<void> fetchUserDataWithUid(String uid) async {
     try {
       // Ottieni i dati utente da Firestore
@@ -33,15 +37,6 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchUserDataWithJson(Map<String, dynamic> userJson) async {
-    try {
-      // Creazione di un UserModel dal JSON ricevuto
-      _user = UserModel.fromJson(userJson);
-      notifyListeners();
-    } catch (e) {
-      print('Errore nel caricamento dei dati utente: $e');
-    }
-  }
 
   // Funzione per aggiornare l'utente
   /*Future<void> updateUser(UserModel updatedUser) async {
@@ -70,6 +65,12 @@ class UserProvider with ChangeNotifier {
     }
   }*/
 
+  /*
+  * Authentication session
+  * */
+  /*
+  * Register user
+  * */
   Future<RequestError> registerUser({
     required String email,
     required String password,
@@ -97,6 +98,9 @@ class UserProvider with ChangeNotifier {
     }
   }
 
+  /**
+  * Login user
+  * */
   Future<String?> login({
     required String email,
     required String password,
@@ -115,6 +119,9 @@ class UserProvider with ChangeNotifier {
     }
   }
 
+/*
+* Logout user
+* */
   void logout() async {
     try {
       // Effettua il logout da Firebase
@@ -124,6 +131,39 @@ class UserProvider with ChangeNotifier {
       notifyListeners();
     } catch (error) {
       print('Errore durante il logout: $error');
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  /**
+   * Update work session
+   * */
+  Future<RequestError> updateUser(
+      {required String userId,
+      required String displayName,
+      required String phoneNumber,
+      required String? work,
+      required bool isAvailable}) async {
+    try {
+      log('Richiamo update...');
+      HttpsCallable callable = FirebaseFunctions.instance.httpsCallable('updateUser');
+      log('Trying..');
+
+      final HttpsCallableResult res = await callable.call(<String, dynamic>{
+        "userId": userId,
+        "displayName": displayName,
+        "phoneNumber": phoneNumber,
+        "work": work,
+        "isAvailable": isAvailable
+      });
+      Map<String, dynamic> userData = Map<String, dynamic>.from(res.data['user']);
+      _user = UserModel.fromJson(userData);
+      notifyListeners();
+      return RequestError.done;
+    } catch (e) {
+      log('Error $e');
+      return RequestError.error;
     }
   }
 }

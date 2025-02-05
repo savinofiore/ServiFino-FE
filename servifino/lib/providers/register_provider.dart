@@ -9,7 +9,7 @@ class RegisterProvider with ChangeNotifier {
   final TextEditingController _displayNameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
 
-  bool _isLoading = false;
+  bool isLoading = false;
 
   // Getter per i controller
   TextEditingController get emailController => _emailController;
@@ -19,11 +19,9 @@ class RegisterProvider with ChangeNotifier {
   TextEditingController get displayNameController => _displayNameController;
   TextEditingController get phoneNumberController => _phoneNumberController;
 
-  // Getter e setter per lo stato di caricamento
-  bool get isLoading => _isLoading;
 
-  set isLoading(bool value) {
-    _isLoading = value;
+  void changeLoading(){
+    isLoading = !isLoading;
     notifyListeners();
   }
 

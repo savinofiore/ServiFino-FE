@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
             create: (_) => ProfileEditProvider(user: null, works: null)),
         ChangeNotifierProvider(create: (_) => WorksProvider()),
-        ChangeNotifierProvider(create: (_) => LandingAssignmentProvider()),
+       // ChangeNotifierProvider(create: (_) => LandingAssignmentProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -56,8 +56,7 @@ class MyApp extends StatelessWidget {
         routes: {
           AppRoutes.authWrapper: (context) =>
               AuthWrapper(), // Definisci la rotta principale (autenticazione)
-          AppRoutes.landing: (context) =>
-              LandingScreen(), // La rotta per la home screen
+          AppRoutes.landing: (context) => LandingScreen(), // La rotta per la home screen
           AppRoutes.auth.login: (context) =>
               LoginScreen(), // La rotta per la login screen
           AppRoutes.auth.register: (context) => RegisterScreen(),

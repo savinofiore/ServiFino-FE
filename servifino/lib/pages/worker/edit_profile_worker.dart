@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:servifino/models/UserModel.dart';
 import 'package:servifino/utils/app_routes.dart';
+import 'package:servifino/utils/request_errors.dart';
 import '../../models/WorksModel.dart';
 import '../../providers/edit_profile_worker_provider.dart';
 import '../../providers/user_provider.dart';
@@ -15,29 +17,22 @@ class EditProfileScreen extends StatelessWidget {
 
   EditProfileScreen({super.key, required this.user, required this.works});
 
-  Future<void> _saveProfile(BuildContext context) async {
-    // Verifica la validità del form
-    if (!_formKey.currentState!.validate()) return;
-    final profileEditorProvider = context.read<ProfileEditProvider>();
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    try {
-      // Chiama la funzione saveChanges e attendi la risposta
-      final statusCode = await profileEditorProvider.saveChanges(user, userProvider);
+  Future<RequestError> _saveProfile(
+      BuildContext context, ProfileEditProvider provider) async {
+    if (!_formKey.currentState!.validate()) return RequestError.error;
 
-      // Verifica se la risposta è valida e ha status code 200
-      if (statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppTexts.profile.successMessage)),
-        );
-        Navigator.pushReplacementNamed(context, AppRoutes.landing);
-      } else {
-        throw '${AppTexts.controllers.errorEditTxt1}: ${statusCode}';
-      }
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    try {
+      final RequestError requestError = await userProvider.updateUser(
+          userId: user!.uid,
+          displayName: provider.displayNameController.text,
+          phoneNumber: provider.phoneNumberController.text,
+          work: provider.selectedWorkId,
+          isAvailable: provider.isAvailable);
+      return requestError;
     } catch (e) {
-      // Gestisci l'errore e mostra un messaggio all'utente
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${AppTexts.profile.errorMessage}: $e')),
-      );
+      return RequestError.error;
     }
   }
 
@@ -139,16 +134,22 @@ class EditProfileScreen extends StatelessWidget {
                                 showConfirmationDialog(context,
                                     title: AppTexts.controllers.editBtnTxt1,
                                     message: AppTexts.controllers.editBtnTxt2,
-                                    onConfirm: () => _saveProfile(context));
+                                    onConfirm: () async => {
+                                          switch (await _saveProfile(
+                                              context, provider)) {
+                                            RequestError.done => {
+                                                Fluttertoast.showToast(
+                                                    msg: AppTexts.profile
+                                                        .successMessage),
+                                              },
+                                            RequestError.error =>
+                                              Fluttertoast.showToast(
+                                                  msg: AppTexts
+                                                      .profile.errorMessage)
+                                          },
+                                        });
                               },
                               child: Text(AppTexts.controllers.save),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pushReplacementNamed(
-                                    context, AppRoutes.landing);
-                              },
-                              child: Text(AppTexts.controllers.cancel),
                             ),
                           ],
                         ),

@@ -56,8 +56,7 @@ class ProfileWorker extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.01), // Distanza adattata
                 Text(
-                  '${user?.displayName} (${user?.work})' ??
-                      'Nome non disponibile',
+                  '${user?.displayName} ${user!.work ?? '' }' ,
                   style: TextStyle(
                     fontSize:
                         screenWidth * 0.05, // Ridotto per essere più compatto

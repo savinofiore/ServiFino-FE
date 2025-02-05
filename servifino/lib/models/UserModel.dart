@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:servifino/utils/app_texts.dart';
 
 class UserModel {
   final String uid;
@@ -48,19 +49,18 @@ class UserModel {
     );
   }
 
-// Metodo per creare un UserModel da JSON
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      uid: json['uid'], // Assumi che il backend restituisca l'UID
-      email: json['email'],
-      displayName: json['displayName'],
-      phoneNumber: json['phoneNumber'],
-      photoURL: json['photoURL'],
-      disabled: json['disabled'],
-      assignment: json['assignment'],
-      work: json['work'],
-      isOwner: json['isOwner'],
-      isAvailable: json['isAvailable'],
+      uid: json['uid'] ?? '', // Fornisci un valore di default se null
+      email: json['email'] ?? '', // Fornisci un valore di default se null
+      displayName: json['displayName'] ?? '', // Fornisci un valore di default se null
+      phoneNumber: json['phoneNumber'] ?? '', // Fornisci un valore di default se null
+      photoURL: json['photoURL'] ?? AppTexts.utils.photoExampleUrl,
+      disabled: json['disabled'] ?? false,
+      assignment: json['assignment'] ?? false,
+      work: json['work'] ?? '', // Fornisci un valore di default se null
+      isOwner: json['isOwner'] ?? false,
+      isAvailable: json['isAvailable'] ?? false, // Fornisci un valore di default se null
     );
   }
 
