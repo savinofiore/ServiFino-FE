@@ -10,6 +10,7 @@ class RegisterProvider with ChangeNotifier {
   final TextEditingController _phoneNumberController = TextEditingController();
 
   bool isLoading = false;
+  bool isOwner = false;
 
   // Getter per i controller
   TextEditingController get emailController => _emailController;
@@ -20,8 +21,13 @@ class RegisterProvider with ChangeNotifier {
   TextEditingController get phoneNumberController => _phoneNumberController;
 
 
-  void changeLoading(){
-    isLoading = !isLoading;
+  void changeLoading(value){
+    isLoading = value;
+    notifyListeners();
+  }
+
+  void updateOwnerValue(bool available) {
+    isOwner = available;
     notifyListeners();
   }
 

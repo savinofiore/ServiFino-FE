@@ -45,6 +45,7 @@ class UserProvider with ChangeNotifier {
     required String displayName,
     required String phoneNumber,
     required String photoURL,
+    required bool isOwner,
   }) async {
     try {
       HttpsCallable callable =
@@ -54,7 +55,8 @@ class UserProvider with ChangeNotifier {
         "password": password,
         "displayName": displayName,
         "phoneNumber": phoneNumber,
-        "photoURL": photoURL
+        "photoURL": photoURL,
+        "isOwner": isOwner
       });
 
       return RequestError.done;

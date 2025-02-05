@@ -34,6 +34,8 @@ class RegisterScreenTexts {
   final String passErrMessage = 'Le password non corrispondono';
   final String textInfo1 = 'Credenziali di accesso al profilo.';
   final String textInfo2 ='Questi dati verranno visualizzati dagli altri utenti.';
+  final String textInfo3 ='Utilizza l\'app per registrare la tua attività.';
+  final String textInfo4 ='Registra attività';
   final String succRegMessagge = 'Registrazione avvenuta con successo!';
   final String errRegMessagge = 'Errore durante la registrazione';
 }
