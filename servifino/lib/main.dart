@@ -4,8 +4,10 @@ import 'package:servifino/auth_router_wrapper.dart';
 import 'package:servifino/pages/worker/history_worker.dart';
 import 'package:servifino/pages/worker/home_worker.dart';
 import 'package:servifino/pages/worker/profile_worker.dart';
+import 'package:servifino/providers/edit_profile_owner_provider.dart';
 import 'package:servifino/providers/edit_profile_worker_provider.dart';
-import 'package:servifino/providers/landing_assignment_provider.dart';
+import 'package:servifino/providers/owner_provider.dart';
+import 'package:servifino/trash/landing_assignment_provider.dart';
 import 'package:servifino/providers/register_provider.dart';
 import 'package:servifino/providers/user_provider.dart';
 import 'package:servifino/providers/works_provider.dart';
@@ -41,9 +43,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => RegisterProvider()),
-        ChangeNotifierProvider(
-            create: (_) => ProfileEditProvider(user: null, works: null)),
+        ChangeNotifierProvider(create: (_) => ProfileEditProvider(user: null, works: null)),
         ChangeNotifierProvider(create: (_) => WorksProvider()),
+        ChangeNotifierProvider(create: (_) => OwnerProvider()),
+        ChangeNotifierProvider(create: (_) => EditOwnerProfileProvider(owner: null)),
        // ChangeNotifierProvider(create: (_) => LandingAssignmentProvider()),
       ],
       child: MaterialApp(

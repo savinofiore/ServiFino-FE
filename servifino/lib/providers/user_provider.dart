@@ -67,8 +67,7 @@ class UserProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
-  /**
+  /*
   * Login user
   * */
   Future<String?> login({
@@ -88,7 +87,6 @@ class UserProvider with ChangeNotifier {
       return null;
     }
   }
-
 /*
 * Logout user
 * */
@@ -105,8 +103,7 @@ class UserProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
-  /**
+  /*
    * Update work session
    * */
   Future<RequestError> updateUser(

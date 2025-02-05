@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:servifino/providers/owner_provider.dart';
 import 'package:servifino/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -10,11 +11,11 @@ class AuthWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final worksProvider = Provider.of<WorksProvider>(context, listen: false);
+    final ownerProvider = Provider.of<OwnerProvider>(context, listen: false);
 
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        // Recupera i lavori
 
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -25,8 +26,10 @@ class AuthWrapper extends StatelessWidget {
           worksProvider.fetchWorks();
           if (snapshot.hasData) {
             // Recupera i dati dell'utente
-            userProvider.fetchUserDataWithUid(snapshot.data!.uid);
-
+            userProvider.fetchUserDataWithUid(snapshot.data!.uid).then((_) {
+              // Azione da eseguire dopo fetchUserDataWithUid
+              ownerProvider.fetchOwnerDataWithUid(userProvider.user!.uid); // Richiama la tua funzione qui
+            });
             // Naviga verso la schermata principale se non ci sei già
             if (ModalRoute.of(context)?.settings.name != AppRoutes.landing) {
               Navigator.pushReplacementNamed(context, AppRoutes.landing);

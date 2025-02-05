@@ -66,18 +66,18 @@ class UserModel {
   }*/
 
   UserModel updateLocally(
-      String displayName, String phoneNumber, String? work, bool isAvailable) {
+      String newDisplayName, String newPhoneNumber, String? newWork, bool newIsAvailable) {
     return UserModel(
-      uid: this.uid,
-      email: this.email,
-      displayName: displayName,
-      phoneNumber: phoneNumber,
-      photoURL: this.photoURL,
-      disabled: this.disabled,
-      assignment: this.assignment,
-      work: work,
-      isOwner: this.isOwner,
-      isAvailable: isAvailable,
+      uid: uid,
+      email: email,
+      displayName: newDisplayName,
+      phoneNumber: newPhoneNumber,
+      photoURL: photoURL,
+      disabled: disabled,
+      assignment: assignment,
+      work: newWork,
+      isOwner: isOwner,
+      isAvailable: newIsAvailable,
       //age: data['age'],
       //address: data['address'],
     );
