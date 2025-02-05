@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:servifino/models/UserModel.dart';
-import 'package:servifino/utils/app_routes.dart';
 import 'package:servifino/utils/request_errors.dart';
 import '../../models/WorksModel.dart';
 import '../../providers/edit_profile_worker_provider.dart';
@@ -77,17 +76,18 @@ class EditProfileScreen extends StatelessWidget {
                             ),
                             TextFormField(
                               controller: provider.emailController,
+                              enabled: false,
                               decoration: InputDecoration(
                                 labelText: AppTexts.controllers.email,
                                 hintText: AppTexts.controllers.emailHint,
                                 prefixIcon: const Icon(Icons.mail),
-                              ),
+                              ), /*
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return AppTexts.controllers.emailError;
                                 }
                                 return null;
-                              },
+                              },*/
                             ),
                             TextFormField(
                               controller: provider.phoneNumberController,
@@ -129,12 +129,16 @@ class EditProfileScreen extends StatelessWidget {
                                 provider.updateAvailability(value);
                               },
                             ),
+                            provider.isLoading == false
+                                ? Container()
+                                : const CircularProgressIndicator(),
                             ElevatedButton(
                               onPressed: () {
                                 showConfirmationDialog(context,
                                     title: AppTexts.controllers.editBtnTxt1,
                                     message: AppTexts.controllers.editBtnTxt2,
                                     onConfirm: () async => {
+                                          provider.updateLoading(true),
                                           switch (await _saveProfile(
                                               context, provider)) {
                                             RequestError.done => {
@@ -147,6 +151,7 @@ class EditProfileScreen extends StatelessWidget {
                                                   msg: AppTexts
                                                       .profile.errorMessage)
                                           },
+                                          provider.updateLoading(false)
                                         });
                               },
                               child: Text(AppTexts.controllers.save),

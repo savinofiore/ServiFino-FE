@@ -36,6 +36,11 @@ class ProfileEditProvider with ChangeNotifier {
     isAvailable = available;
     notifyListeners();
   }
+  // Aggiorna la disponibilità
+  void updateLoading(bool value) {
+    isLoading = value;
+    notifyListeners();
+  }
 
   // Salva le modifiche
   Future<int> saveChanges(UserModel? user, UserProvider userProvider) async {

@@ -4,14 +4,14 @@ import 'package:servifino/utils/app_texts.dart';
 class UserModel {
   final String uid;
   final String email;
-  final String displayName;
-  final String? phoneNumber;
+  late final String displayName;
+  late final String? phoneNumber;
   final String? photoURL;
   final bool disabled;
   final bool assignment;
-  final String? work;
+  late final String? work;
   final bool isOwner;
-  final bool isAvailable;
+  late final bool isAvailable;
   //final int? age; // Nuovo campo
   //final String? address; // Nuovo campo
 
@@ -49,6 +49,7 @@ class UserModel {
     );
   }
 
+  /*
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       uid: json['uid'] ?? '', // Fornisci un valore di default se null
@@ -62,9 +63,28 @@ class UserModel {
       isOwner: json['isOwner'] ?? false,
       isAvailable: json['isAvailable'] ?? false, // Fornisci un valore di default se null
     );
+  }*/
+
+  UserModel updateLocally(
+      String displayName, String phoneNumber, String? work, bool isAvailable) {
+    return UserModel(
+      uid: this.uid,
+      email: this.email,
+      displayName: displayName,
+      phoneNumber: phoneNumber,
+      photoURL: this.photoURL,
+      disabled: this.disabled,
+      assignment: this.assignment,
+      work: work,
+      isOwner: this.isOwner,
+      isAvailable: isAvailable,
+      //age: data['age'],
+      //address: data['address'],
+    );
   }
 
   // Converte l'oggetto UserModel in una mappa per Firestore
+  /*
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
@@ -81,4 +101,5 @@ class UserModel {
       //'address': address,
     };
   }
+  */
 }
