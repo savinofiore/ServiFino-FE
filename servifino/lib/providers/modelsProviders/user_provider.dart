@@ -39,8 +39,8 @@ class UserProvider with ChangeNotifier {
     required bool isOwner,
   }) async {
     try {
-      HttpsCallable callable = FirebaseFunctions.instance
-          .httpsCallableFromUrl('https://createuser-sap7hrqoga-uc.a.run.app');
+      HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl('https://createuser-sap7hrqoga-uc.a.run.app');
+     // HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl(_userCreateTest);
 
       await callable.call({
         "email": email,

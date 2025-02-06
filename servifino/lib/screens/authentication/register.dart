@@ -126,7 +126,6 @@ class RegisterScreen extends StatelessWidget {
                       else
                         ElevatedButton(
                           onPressed: () async {
-                            registerProvider.changeLoading(true);
                             switch (registerProvider.validateFields()) {
                               case RegistrationError.success:
                                 break;
@@ -143,6 +142,7 @@ class RegisterScreen extends StatelessWidget {
                                 );
                                 return;
                             }
+                            registerProvider.changeLoading(true);
                             switch (await userProvider.registerUser(
                                 email: registerProvider.emailController.text
                                     .trim(),
