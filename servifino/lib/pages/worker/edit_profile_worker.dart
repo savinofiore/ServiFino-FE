@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:servifino/models/UserModel.dart';
 import 'package:servifino/utils/request_errors.dart';
+import 'package:servifino/widgets/show_message.dart';
 import '../../models/WorksModel.dart';
 import '../../providers/pagesProviders/edit_profile_worker_provider.dart';
 import '../../providers/modelsProviders/user_provider.dart';
@@ -121,14 +122,13 @@ class EditProfileScreen extends StatelessWidget {
                                           switch (await _saveProfile(
                                               context, provider)) {
                                             RequestError.done => {
-                                                Fluttertoast.showToast(
-                                                    msg: AppTexts.profile
-                                                        .successMessage),
+                                              ShowMessageWidget(
+                                                message: AppTexts.profile
+                                                    .successMessage,
+                                              ),
                                               },
-                                            RequestError.error =>
-                                              Fluttertoast.showToast(
-                                                  msg: AppTexts
-                                                      .profile.errorMessage)
+                                            RequestError.error => ShowMessageWidget(message:AppTexts
+                                                .profile.errorMessage ,)
                                           },
                                           provider.updateLoading(false)
                                         });
