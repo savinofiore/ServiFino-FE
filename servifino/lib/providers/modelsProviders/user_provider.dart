@@ -98,7 +98,7 @@ class UserProvider with ChangeNotifier {
       required String? work,
       required bool isAvailable}) async {
     try {
-      HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl('https://us-central1-servifino.cloudfunctions.net/updateUser');
+      HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl('https://updateuser-sap7hrqoga-uc.a.run.app');
       log('Trying..');
 
       await callable.call(<String, dynamic>{

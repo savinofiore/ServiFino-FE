@@ -38,8 +38,7 @@ class OwnerProvider with ChangeNotifier {
     required String? activityNumber,
   }) async {
     try {
-      HttpsCallable callable =
-          FirebaseFunctions.instance.httpsCallable('addOrUpdateOwner');
+      HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl('https://us-central1-servifino.cloudfunctions.net/addOrUpdateOwner');
 
       final res = await callable.call({
         "userUid": userUid,
