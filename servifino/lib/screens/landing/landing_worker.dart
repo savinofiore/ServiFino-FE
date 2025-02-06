@@ -4,7 +4,7 @@ import 'package:servifino/models/WorksModel.dart';
 import 'package:servifino/pages/worker/history_worker.dart';
 import 'package:servifino/pages/worker/home_worker.dart';
 import 'package:servifino/pages/worker/profile_worker.dart';
-import 'package:servifino/providers/user_provider.dart';
+import 'package:servifino/providers/modelsProviders/user_provider.dart';
 import '../../utils/app_texts.dart';
 
 class LandingWorker extends StatelessWidget {

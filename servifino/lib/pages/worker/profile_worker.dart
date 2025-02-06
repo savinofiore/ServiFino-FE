@@ -4,7 +4,7 @@ import 'package:servifino/utils/app_routes.dart';
 import 'package:servifino/utils/app_texts.dart';
 import '../../models/UserModel.dart';
 import '../../models/WorksModel.dart';
-import '../../providers/user_provider.dart';
+import '../../providers/modelsProviders/user_provider.dart';
 import '../../widgets/show_confirmation_dialog.dart';
 import 'edit_profile_worker.dart';
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:servifino/providers/owner_provider.dart';
-import 'package:servifino/providers/user_provider.dart';
+import 'package:servifino/providers/modelsProviders/owner_provider.dart';
+import 'package:servifino/providers/modelsProviders/user_provider.dart';
 import 'package:servifino/screens/landing/landing_owner.dart';
 import 'package:servifino/screens/landing/landing_worker.dart';
 import '../../models/WorksModel.dart';
-import '../../providers/works_provider.dart';
+import '../../providers/modelsProviders/works_provider.dart';
 
 class LandingScreen extends StatelessWidget {
   //late UserModel? user;

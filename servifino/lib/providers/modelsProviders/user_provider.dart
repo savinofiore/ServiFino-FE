@@ -6,17 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:servifino/utils/request_errors.dart';
-import '../models/UserModel.dart';
+import '../../models/UserModel.dart';
 
 class UserProvider with ChangeNotifier {
   UserModel? _user;
   final String _userCollection = dotenv.env['USER_COLLECTION'] ?? '';
+  final String _userCreateTest = dotenv.env['CREATE_USER_ENDPOINT_TEST'] ?? '';
 
   UserModel? get user => _user;
 
-  /*
-  * Fetch model session
-  * */
   Future<void> fetchUserDataWithUid(String uid) async {
     try {
       // Ottieni i dati utente da Firestore
@@ -33,29 +31,21 @@ class UserProvider with ChangeNotifier {
       print("Errore nel recupero dei dati utente: $e");
     }
   }
-  /*
-  * Authentication session
-  * */
-  /*
-  * Register user
-  * */
+
   Future<RequestError> registerUser({
     required String email,
     required String password,
     required String displayName,
-    required String phoneNumber,
-    required String photoURL,
     required bool isOwner,
   }) async {
     try {
-      HttpsCallable callable =
-          FirebaseFunctions.instance.httpsCallable('createUser');
+      HttpsCallable callable = FirebaseFunctions.instance
+          .httpsCallableFromUrl('https://createuser-sap7hrqoga-uc.a.run.app');
+
       await callable.call({
         "email": email,
         "password": password,
         "displayName": displayName,
-        "phoneNumber": phoneNumber,
-        "photoURL": photoURL,
         "isOwner": isOwner
       });
 
@@ -67,9 +57,8 @@ class UserProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-  /*
-  * Login user
-  * */
+
+
   Future<String?> login({
     required String email,
     required String password,
@@ -87,9 +76,7 @@ class UserProvider with ChangeNotifier {
       return null;
     }
   }
-/*
-* Logout user
-* */
+
   void logout() async {
     try {
       // Effettua il logout da Firebase
@@ -103,13 +90,11 @@ class UserProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-  /*
-   * Update work session
-   * */
+
   Future<RequestError> updateUser(
       {required String userId,
       required String displayName,
-      required String phoneNumber,
+      //required String phoneNumber,
       required String? work,
       required bool isAvailable}) async {
     try {
@@ -120,11 +105,11 @@ class UserProvider with ChangeNotifier {
       await callable.call(<String, dynamic>{
         "userId": userId,
         "displayName": displayName,
-        "phoneNumber": phoneNumber,
+        //"phoneNumber": phoneNumber,
         "work": work,
         "isAvailable": isAvailable
       });
-      _user = _user!.updateLocally(displayName, phoneNumber, work, isAvailable);
+      _user = _user!.updateLocally(displayName, work, isAvailable);
       notifyListeners();
       return RequestError.done;
     } catch (e) {

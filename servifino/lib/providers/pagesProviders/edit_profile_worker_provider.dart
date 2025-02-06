@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:servifino/providers/user_provider.dart';
-import '../models/UserModel.dart';
-import '../models/WorksModel.dart';
+import 'package:servifino/providers/modelsProviders/user_provider.dart';
+import '../../models/UserModel.dart';
+import '../../models/WorksModel.dart';
 
 class ProfileEditProvider with ChangeNotifier {
   final TextEditingController displayNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
   String? selectedWorkId;
   bool isAvailable = false;
   bool isLoading = false;
@@ -19,7 +18,7 @@ class ProfileEditProvider with ChangeNotifier {
     if (user != null) {
       displayNameController.text = user!.displayName;
       emailController.text = user!.email;
-      phoneNumberController.text = user!.phoneNumber ?? '';
+      //phoneNumberController.text = user!.phoneNumber ?? '';
       selectedWorkId = user!.work;
       isAvailable = user!.isAvailable;
     }
@@ -55,10 +54,10 @@ class ProfileEditProvider with ChangeNotifier {
         uid: user.uid,
         email: emailController.text,
         displayName: displayNameController.text,
-        phoneNumber: phoneNumberController.text,
-        photoURL: user.photoURL,
+        //phoneNumber: phoneNumberController.text,
+        //photoURL: user.photoURL,
         disabled: user.disabled,
-        assignment: user.assignment,
+        //assignment: user.assignment,
         work: selectedWorkId,
         isOwner: user.isOwner,
         isAvailable: isAvailable,
@@ -80,7 +79,6 @@ class ProfileEditProvider with ChangeNotifier {
   void dispose() {
     displayNameController.dispose();
     emailController.dispose();
-    phoneNumberController.dispose();
     super.dispose();
   }
 }

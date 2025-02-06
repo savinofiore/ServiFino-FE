@@ -25,7 +25,7 @@ void showConfirmationDialog(BuildContext context, {
               Navigator.of(context).pop(); // Chiudi il dialog
               onConfirm(); // Esegui la funzione di conferma
             },
-            child: Text(AppTexts.controllers.confirm, style: TextStyle(color: Colors.red)),
+            child: Text(AppTexts.controllers.confirm, style: const TextStyle(color: Colors.red)),
           ),
         ],
       );

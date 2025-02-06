@@ -3,8 +3,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:servifino/pages/owner/history_owner.dart';
 import 'package:servifino/pages/owner/home_owner.dart';
 import 'package:servifino/pages/owner/profile_owner.dart';
-import 'package:servifino/providers/owner_provider.dart';
-import 'package:servifino/providers/user_provider.dart';
+import 'package:servifino/providers/modelsProviders/owner_provider.dart';
+import 'package:servifino/providers/modelsProviders/user_provider.dart';
 import 'package:servifino/utils/app_texts.dart';
 
 

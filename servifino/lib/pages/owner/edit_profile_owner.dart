@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:servifino/models/OwnerModel.dart';
 import 'package:servifino/models/UserModel.dart';
-import 'package:servifino/providers/edit_profile_owner_provider.dart';
-import 'package:servifino/providers/owner_provider.dart';
+import 'package:servifino/providers/pagesProviders/edit_profile_owner_provider.dart';
+import 'package:servifino/providers/modelsProviders/owner_provider.dart';
 import 'package:servifino/utils/request_errors.dart';
 
 class EditOwnerProfileScreen extends StatelessWidget {

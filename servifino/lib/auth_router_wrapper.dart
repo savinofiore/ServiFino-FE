@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:servifino/providers/owner_provider.dart';
-import 'package:servifino/providers/user_provider.dart';
+import 'package:servifino/providers/modelsProviders/owner_provider.dart';
+import 'package:servifino/providers/modelsProviders/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:servifino/providers/works_provider.dart';
+import 'package:servifino/providers/modelsProviders/works_provider.dart';
 import 'package:servifino/utils/app_routes.dart';
 
 class AuthWrapper extends StatelessWidget {

@@ -7,7 +7,7 @@ class RegisterProvider with ChangeNotifier {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final TextEditingController _displayNameController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
+  //final TextEditingController _phoneNumberController = TextEditingController();
 
   bool isLoading = false;
   bool isOwner = false;
@@ -18,7 +18,7 @@ class RegisterProvider with ChangeNotifier {
   TextEditingController get confirmPasswordController =>
       _confirmPasswordController;
   TextEditingController get displayNameController => _displayNameController;
-  TextEditingController get phoneNumberController => _phoneNumberController;
+  //TextEditingController get phoneNumberController => _phoneNumberController;
 
 
   void changeLoading(value){
@@ -44,6 +44,6 @@ class RegisterProvider with ChangeNotifier {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     _displayNameController.dispose();
-    _phoneNumberController.dispose();
+   // _phoneNumberController.dispose();
   }
 }

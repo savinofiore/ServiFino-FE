@@ -1,16 +1,12 @@
-import 'dart:developer';
-import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:servifino/providers/register_provider.dart';
+import 'package:servifino/providers/pagesProviders/register_provider.dart';
 import 'package:servifino/utils/app_routes.dart';
 import 'package:servifino/utils/app_texts.dart';
 import 'package:servifino/utils/request_errors.dart';
+import 'package:servifino/widgets/show_message.dart';
 
-import '../../providers/user_provider.dart';
+import '../../providers/modelsProviders/user_provider.dart';
 
 class RegisterScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -99,9 +95,10 @@ class RegisterScreen extends StatelessWidget {
                           return null;
                         },
                       ),
-                      TextFormField(
+                      /*TextFormField(
                         controller: registerProvider.phoneNumberController,
                         keyboardType: TextInputType.number,
+                        enabled: false,
                         decoration: InputDecoration(
                           labelText: AppTexts.controllers.number,
                           hintText: AppTexts.controllers.numberHint,
@@ -113,7 +110,7 @@ class RegisterScreen extends StatelessWidget {
                           }
                           return null;
                         },
-                      ),
+                      ),*/
                       const SizedBox(height: 16),
                       Text(AppTexts.register.textInfo3),
                       SwitchListTile(
@@ -134,14 +131,16 @@ class RegisterScreen extends StatelessWidget {
                               case RegistrationError.success:
                                 break;
                               case RegistrationError.dismatchPassword:
-                                Fluttertoast.showToast(
-                                    msg:
-                                        AppTexts.controllers.confPasswordError);
+                                ShowMessageWidget(
+                                  message:
+                                      AppTexts.controllers.confPasswordError,
+                                );
                                 return;
                               case RegistrationError.error:
-                                Fluttertoast.showToast(
-                                    msg: AppTexts
-                                        .controllers.errorOperationMessage);
+                                ShowMessageWidget(
+                                  message: AppTexts
+                                      .controllers.errorOperationMessage,
+                                );
                                 return;
                             }
                             switch (await userProvider.registerUser(
@@ -151,14 +150,11 @@ class RegisterScreen extends StatelessWidget {
                                     registerProvider.passwordController.text,
                                 displayName:
                                     registerProvider.displayNameController.text,
-                                phoneNumber:
-                                    registerProvider.phoneNumberController.text,
-                                photoURL: AppTexts.utils.photoExampleUrl,
-                            isOwner: registerProvider.isOwner
-                            )) {
+                                isOwner: registerProvider.isOwner)) {
                               case RequestError.done:
-                                Fluttertoast.showToast(
-                                    msg: AppTexts.register.succRegMessagge);
+                                ShowMessageWidget(
+                                  message: AppTexts.register.succRegMessagge,
+                                );
                                 String? userUid = await userProvider.login(
                                     email: registerProvider.emailController.text
                                         .trim(),
@@ -170,8 +166,8 @@ class RegisterScreen extends StatelessWidget {
                                     context, AppRoutes.landing);
                                 break;
                               case RequestError.error:
-                                Fluttertoast.showToast(
-                                    msg: AppTexts.register.errRegMessagge);
+                                ShowMessageWidget(
+                                    message: AppTexts.register.errRegMessagge);
                                 break;
                             }
                             registerProvider.changeLoading(false);

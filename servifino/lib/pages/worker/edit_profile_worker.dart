@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:servifino/models/UserModel.dart';
 import 'package:servifino/utils/request_errors.dart';
 import '../../models/WorksModel.dart';
-import '../../providers/edit_profile_worker_provider.dart';
-import '../../providers/user_provider.dart';
+import '../../providers/pagesProviders/edit_profile_worker_provider.dart';
+import '../../providers/modelsProviders/user_provider.dart';
 import '../../utils/app_texts.dart';
 import '../../widgets/show_confirmation_dialog.dart';
 
@@ -26,7 +26,6 @@ class EditProfileScreen extends StatelessWidget {
       final RequestError requestError = await userProvider.updateUser(
           userId: user!.uid,
           displayName: provider.displayNameController.text,
-          phoneNumber: provider.phoneNumberController.text,
           work: provider.selectedWorkId,
           isAvailable: provider.isAvailable);
       return requestError;
@@ -81,27 +80,7 @@ class EditProfileScreen extends StatelessWidget {
                                 labelText: AppTexts.controllers.email,
                                 hintText: AppTexts.controllers.emailHint,
                                 prefixIcon: const Icon(Icons.mail),
-                              ), /*
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return AppTexts.controllers.emailError;
-                                }
-                                return null;
-                              },*/
-                            ),
-                            TextFormField(
-                              controller: provider.phoneNumberController,
-                              decoration: InputDecoration(
-                                labelText: AppTexts.controllers.number,
-                                hintText: AppTexts.controllers.numberHint,
-                                prefixIcon: const Icon(Icons.phone),
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return AppTexts.controllers.numberError;
-                                }
-                                return null;
-                              },
                             ),
                             DropdownButtonFormField<String>(
                               decoration: InputDecoration(

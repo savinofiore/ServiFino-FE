@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:servifino/providers/user_provider.dart';
+import 'package:servifino/providers/modelsProviders/user_provider.dart';
 
 import '../../utils/app_routes.dart';
 import '../../utils/app_texts.dart';
