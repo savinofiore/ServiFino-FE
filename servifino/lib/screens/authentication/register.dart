@@ -142,7 +142,7 @@ class RegisterScreen extends StatelessWidget {
                                 );
                                 return;
                             }
-                            registerProvider.changeLoading(true);
+                            registerProvider.updateLoading(true);
                             Map<String, dynamic> userData = {
                               'email':
                                   registerProvider.emailController.text.trim(),
@@ -172,7 +172,7 @@ class RegisterScreen extends StatelessWidget {
                                     message: AppTexts.register.errRegMessagge);
                                 break;
                             }
-                            registerProvider.changeLoading(false);
+                            registerProvider.updateLoading(false);
                           },
                           child: Text(AppTexts.register.registerButton),
                         ),

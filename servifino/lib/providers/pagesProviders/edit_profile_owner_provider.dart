@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:servifino/models/OwnerModel.dart';
 
 class EditOwnerProfileProvider with ChangeNotifier {
@@ -35,6 +35,43 @@ class EditOwnerProfileProvider with ChangeNotifier {
   }
 
   // Metodo per pulire i controller quando non sono più necessari
+  void disposeControllers() {
+    activityNameController.dispose();
+    activityDescriptionController.dispose();
+    activityLocationController.dispose();
+    activityWebsiteController.dispose();
+    activityNumberController.dispose();
+  }
+}*/
+
+import 'package:flutter/material.dart';
+import 'package:servifino/interfaces/BaseUIProvider.dart';
+import 'package:servifino/models/OwnerModel.dart';
+
+class EditOwnerProfileProvider extends BaseUIProvider {
+  final OwnerModel? owner;
+
+  final TextEditingController activityNameController = TextEditingController();
+  final TextEditingController activityDescriptionController = TextEditingController();
+  final TextEditingController activityLocationController = TextEditingController();
+  final TextEditingController activityWebsiteController = TextEditingController();
+  final TextEditingController activityNumberController = TextEditingController();
+
+  EditOwnerProfileProvider({required this.owner}) {
+    initializeControllers(owner);
+  }
+
+  void initializeControllers(OwnerModel? owner) {
+    if (owner != null) {
+      activityNameController.text = owner.activityName;
+      activityDescriptionController.text = owner.activityDescription ?? '';
+      activityLocationController.text = owner.activityLocation;
+      activityWebsiteController.text = owner.activityWebsite ?? '';
+      activityNumberController.text = owner.activityNumber ?? '';
+    }
+  }
+
+  @override
   void disposeControllers() {
     activityNameController.dispose();
     activityDescriptionController.dispose();

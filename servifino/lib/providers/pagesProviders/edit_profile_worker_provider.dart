@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:servifino/providers/modelsProviders/user_provider.dart';
 import '../../models/UserModel.dart';
 import '../../models/WorksModel.dart';
@@ -80,5 +80,71 @@ class ProfileEditProvider with ChangeNotifier {
     displayNameController.dispose();
     emailController.dispose();
     super.dispose();
+  }
+}
+*/
+
+import 'package:flutter/material.dart';
+import 'package:servifino/interfaces/BaseUIProvider.dart';
+import 'package:servifino/providers/modelsProviders/user_provider.dart';
+import '../../models/UserModel.dart';
+import '../../models/WorksModel.dart';
+
+class ProfileEditProvider extends BaseUIProvider {
+  final TextEditingController displayNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  String? selectedWorkId;
+  bool isAvailable = false;
+
+  final List<WorkModel>? works;
+  final UserModel? user;
+
+  ProfileEditProvider({required this.works, required this.user}) {
+    if (user != null) {
+      displayNameController.text = user!.displayName;
+      emailController.text = user!.email;
+      selectedWorkId = user!.work;
+      isAvailable = user!.isAvailable;
+    }
+  }
+
+  void updateSelectedWork(String workId) {
+    selectedWorkId = workId;
+    notifyListeners();
+  }
+
+  void updateAvailability(bool available) {
+    isAvailable = available;
+    notifyListeners();
+  }
+
+  Future<int> saveChanges(UserModel? user, UserProvider userProvider) async {
+    if (user == null) return 400;
+
+    updateLoading(true);
+    try {
+      UserModel updatedUser = UserModel(
+        uid: user.uid,
+        email: emailController.text,
+        displayName: displayNameController.text,
+        disabled: user.disabled,
+        work: selectedWorkId,
+        isOwner: user.isOwner,
+        isAvailable: isAvailable,
+      );
+
+      return 200;
+    } catch (e) {
+      print("Errore durante il salvataggio: $e");
+      return 500;
+    } finally {
+      updateLoading(false);
+    }
+  }
+
+  @override
+  void disposeControllers() {
+    displayNameController.dispose();
+    emailController.dispose();
   }
 }
