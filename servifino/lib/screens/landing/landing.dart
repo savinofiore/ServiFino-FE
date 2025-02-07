@@ -19,18 +19,14 @@ class LandingScreen extends StatelessWidget {
 
     works = worksProvider.data;
 
-
     return userProvider.data?.isOwner == true
-            ? LandingOwner(
-                userProvider: userProvider,
-                ownerProvider: ownerProvider,
-              )
-            :
-            LandingWorker(
-                userProvider: userProvider,
-                works: works,
-              )
-
-        ;
+        ? LandingOwner(
+            userProvider: userProvider,
+            ownerProvider: ownerProvider,
+          )
+        : LandingWorker(
+            userProvider: userProvider,
+            works: works,
+          );
   }
 }

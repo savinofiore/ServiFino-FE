@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:servifino/models/OwnerModel.dart';
 import 'package:servifino/models/WorksModel.dart';
 import 'package:servifino/pages/edit_profile.dart';
-import 'package:servifino/pages/owner/edit_profile_owner.dart';
 import 'package:servifino/utils/app_routes.dart';
 import 'package:servifino/utils/app_texts.dart';
 import '../../models/UserModel.dart';
@@ -53,16 +51,6 @@ abstract class ProfileBase extends StatelessWidget {
             ),
             child: Column(
               children: [
-                CircleAvatar(
-                  radius: screenWidth * 0.1,
-                  backgroundColor: Colors.blueAccent,
-                  child: const Icon(
-                    Icons.person,
-                    //size: 40,
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: screenHeight * 0.01),
                 Text(
                   title,
                   style: TextStyle(
@@ -88,22 +76,6 @@ abstract class ProfileBase extends StatelessWidget {
             child: Column(
               children: [
                 additionalWidget!,
-                /*
-                if(!user!.isOwner)
-                  ListTile(
-                    leading: const Icon(Icons.edit, color: Colors.blueAccent),
-                    title: Text(AppTexts.controllers.editProfileBtn),
-                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => EditOwnerProfileScreen(user: user, owner: owner,)),
-                      );
-                    },
-                  ),
-                if(!user!.isOwner)
-                const Divider(),
-                */
                 ListTile(
                   leading: const Icon(Icons.edit, color: Colors.blueAccent),
                   title: Text(AppTexts.controllers.editProfileBtn),

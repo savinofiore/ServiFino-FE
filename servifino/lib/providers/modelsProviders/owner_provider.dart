@@ -17,7 +17,7 @@ class OwnerProvider extends BaseProvider<OwnerModel> {
 
   @override
   Future<void> fetchData(String uid) async {
-   // if(_owner != null) return;
+    // if(_owner != null) return;
     try {
       DocumentSnapshot ownerDoc =
           await FirebaseFirestore.instance.collection('owners').doc(uid).get();
@@ -52,11 +52,10 @@ class OwnerProvider extends BaseProvider<OwnerModel> {
     try {
       // Ottieni il riferimento alla funzione Firebase
       HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl(
-        'https://us-central1-servifino.cloudfunctions.net/getNonOwnerUsers', // Nome della funzione Firebase
+        'https://us-central1-servifino.cloudfunctions.net/getNonOwnerUsers',
       );
       // Chiama la funzione Firebase
       final response = await callable.call();
-      //log(response.data['users'].toString());
       if (response.data != null && response.data['users'] != null) {
         final List<dynamic> usersData = response.data['users'];
         _usersToBook =
@@ -70,4 +69,22 @@ class OwnerProvider extends BaseProvider<OwnerModel> {
       notifyListeners();
     }
   }
+
+  Future<RequestError> addReservation(Map<String, dynamic> updates) async {
+    try {
+      HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl(
+          'https://us-central1-servifino.cloudfunctions.net/addOrUpdateOwner');
+      await callable.call(updates);
+      _owner = _owner!.updateLocally(updates);
+      notifyListeners();
+      return RequestError.done;
+    } catch (e) {
+      log('Error $e');
+      return RequestError.error;
+    }
+  }
+
+
+
+
 }

@@ -13,7 +13,7 @@ class ProfileOwner extends ProfileBase {
     required this.owner,
   }) : super(
             title: owner?.activityName ?? 'Configura attività',
-            subtitle: owner?.activityNumber ?? '',
+            subtitle: user?.displayName ?? '',
             user: user,
             works: null,
             additionalWidget: OwnerProfileAdditionalWidget(user: user, owner: owner,));
