@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:servifino/models/UserModel.dart';
 import 'package:servifino/utils/request_errors.dart';
 import 'package:servifino/widgets/show_message.dart';
-import '../../models/WorksModel.dart';
-import '../../providers/pagesProviders/edit_profile_worker_provider.dart';
-import '../../providers/modelsProviders/user_provider.dart';
-import '../../utils/app_texts.dart';
-import '../../widgets/show_confirmation_dialog.dart';
+import '../models/WorksModel.dart';
+import '../providers/pagesProviders/edit_profile_worker_provider.dart';
+import '../providers/modelsProviders/user_provider.dart';
+import '../utils/app_texts.dart';
+import '../widgets/show_confirmation_dialog.dart';
 
-class EditProfileScreen extends StatelessWidget {
+class EditUserPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   late UserModel? user;
   late List<WorkModel>? works;
 
-  EditProfileScreen({super.key, required this.user, required this.works});
+  EditUserPage({super.key, required this.user, required this.works});
 
   Future<RequestError> _saveProfile(
       BuildContext context, ProfileEditProvider provider) async {
@@ -86,6 +85,7 @@ class EditProfileScreen extends StatelessWidget {
                                 prefixIcon: const Icon(Icons.mail),
                               ),
                             ),
+                            if(!user!.isOwner)
                             DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                 labelText: AppTexts.controllers.work,
@@ -103,6 +103,7 @@ class EditProfileScreen extends StatelessWidget {
                                 provider.updateSelectedWork(value!);
                               },
                             ),
+                            if(!user!.isOwner)
                             SwitchListTile(
                               title: Text(provider.isAvailable
                                   ? AppTexts.utils.available
