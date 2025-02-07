@@ -17,9 +17,9 @@ class LandingScreen extends StatelessWidget {
     final ownerProvider = Provider.of<OwnerProvider>(context);
     final worksProvider = Provider.of<WorksProvider>(context);
 
-    works = worksProvider.worksList;
+    works = worksProvider.data;
 
-    return userProvider.user?.isOwner == true
+    return userProvider.data?.isOwner == true
             ? LandingOwner(
                 userProvider: userProvider,
                 ownerProvider: ownerProvider,

@@ -22,8 +22,8 @@ class LandingOwner extends StatelessWidget {
     required this.ownerProvider
   }) : _pages = [
     HistoryOwner(),
-    HomeOwner(user: userProvider.user),
-    ProfileOwner(user: userProvider.user, owner: ownerProvider.owner,),
+    HomeOwner(user: userProvider.data),
+    ProfileOwner(user: userProvider.data, owner: ownerProvider.data,),
   ];
 
   final ValueNotifier<int> _selectedIndex = ValueNotifier<int>(1);
@@ -35,7 +35,7 @@ class LandingOwner extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '${AppTexts.title} - ${ownerProvider.owner?.activityName ?? 'Configura attività'} ',
+          '${AppTexts.title} - ${ownerProvider.data?.activityName ?? 'Configura attività'} ',
         ),
       ),
       body: ValueListenableBuilder<int>(

@@ -143,14 +143,17 @@ class RegisterScreen extends StatelessWidget {
                                 return;
                             }
                             registerProvider.changeLoading(true);
-                            switch (await userProvider.registerUser(
-                                email: registerProvider.emailController.text
-                                    .trim(),
-                                password:
-                                    registerProvider.passwordController.text,
-                                displayName:
-                                    registerProvider.displayNameController.text,
-                                isOwner: registerProvider.isOwner)) {
+                            Map<String, dynamic> userData = {
+                              'email':
+                                  registerProvider.emailController.text.trim(),
+                              'password':
+                                  registerProvider.passwordController.text,
+                              'displayName':
+                                  registerProvider.displayNameController.text,
+                              'isOwner': registerProvider.isOwner
+                            };
+
+                            switch (await userProvider.registerUser(userData)) {
                               case RequestError.done:
                                 ShowMessageWidget(
                                   message: AppTexts.register.succRegMessagge,
@@ -160,8 +163,7 @@ class RegisterScreen extends StatelessWidget {
                                         .trim(),
                                     password: registerProvider
                                         .passwordController.text);
-                                await userProvider
-                                    .fetchUserDataWithUid(userUid!);
+                                await userProvider.fetchData(userUid!);
                                 Navigator.pushReplacementNamed(
                                     context, AppRoutes.landing);
                                 break;

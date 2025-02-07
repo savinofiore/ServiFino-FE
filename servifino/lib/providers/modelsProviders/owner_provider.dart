@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+/*import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,26 +36,75 @@ class OwnerProvider with ChangeNotifier {
     required String? activityWebsite,
     required String? activityNumber,
   }) async {
+
+    Map<String, dynamic> updates = {
+      "userUid": userUid,
+      "activityName": activityName,
+      "activityDescription": activityDescription,
+      "activityLocation": activityLocation,
+      "activityWebsite": activityWebsite,
+      "activityNumber": activityNumber,
+    };
+
     try {
       HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl('https://us-central1-servifino.cloudfunctions.net/addOrUpdateOwner');
 
-      final res = await callable.call({
-        "userUid": userUid,
-        "activityName": activityName,
-        "activityDescription": activityDescription,
-        "activityLocation": activityLocation,
-        "activityWebsite": activityWebsite,
-        "activityNumber": activityNumber,
-      });
+      final res = await callable.call(updates);
       log(res.data.toString());
-      _owner = _owner!.updateLocally(userUid, activityName, activityDescription,
-          activityLocation, activityWebsite, activityNumber);
+      _owner = _owner!.updateLocally(updates);
       return RequestError.done;
     } catch (e) {
       log('Error $e');
       return RequestError.error;
     } finally {
       notifyListeners();
+    }
+  }
+}
+*/
+
+import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:servifino/interfaces/BaseProvider.dart';
+import 'package:servifino/models/OwnerModel.dart';
+import 'package:servifino/utils/request_errors.dart';
+
+class OwnerProvider extends BaseProvider<OwnerModel> {
+  OwnerModel? _owner;
+  @override
+  OwnerModel? get data => _owner;
+
+  @override
+  Future<void> fetchData(String uid) async {
+    try {
+      DocumentSnapshot ownerDoc = await FirebaseFirestore.instance
+          .collection('owners')
+          .doc(uid)
+          .get();
+
+      if (ownerDoc.exists) {
+        _owner = OwnerModel.fromFirestore(ownerDoc);
+        notifyListeners();
+      }
+    } catch (e) {
+      print("Errore nel recupero dei dati owner: $e");
+    }
+  }
+
+  @override
+  Future<RequestError> updateData(Map<String, dynamic> updates) async {
+    try {
+      HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl(
+          'https://us-central1-servifino.cloudfunctions.net/addOrUpdateOwner');
+
+      await callable.call(updates);
+      _owner = _owner!.updateLocally(updates);
+      notifyListeners();
+      return RequestError.done;
+    } catch (e) {
+      log('Error $e');
+      return RequestError.error;
     }
   }
 }

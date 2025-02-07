@@ -20,9 +20,9 @@ class LandingWorker extends StatelessWidget {
     required this.works,
     required this.userProvider
   }) : _pages = [
-    HistoryWorker(user: userProvider.user, works: works,),
-    HomeWorker(user: userProvider.user, works: works),
-    ProfileWorker(user: userProvider.user, works: works),
+    HistoryWorker(user: userProvider.data, works: works,),
+    HomeWorker(user: userProvider.data, works: works),
+    ProfileWorker(user: userProvider.data, works: works),
   ];
 
   final ValueNotifier<int> _selectedIndex = ValueNotifier<int>(1);
@@ -35,7 +35,7 @@ class LandingWorker extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '${AppTexts.title} ${works?.firstWhere((work) => work.id == userProvider.user?.work, orElse: () => WorkModel(id: '', name: '', description: '')).name}',
+          '${AppTexts.title} ${works?.firstWhere((work) => work.id == userProvider.data?.work, orElse: () => WorkModel(id: '', name: '', description: '')).name}',
         ),
       ),
       body: ValueListenableBuilder<int>(

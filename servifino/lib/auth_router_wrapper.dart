@@ -23,12 +23,12 @@ class AuthWrapper extends StatelessWidget {
 
         // Usa un controllo per verificare se la navigazione è necessaria
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          worksProvider.fetchWorks();
+          worksProvider.fetchData('');
           if (snapshot.hasData) {
             // Recupera i dati dell'utente
-            userProvider.fetchUserDataWithUid(snapshot.data!.uid).then((_) {
+            userProvider.fetchData(snapshot.data!.uid).then((_) {
               // Azione da eseguire dopo fetchUserDataWithUid
-              ownerProvider.fetchOwnerDataWithUid(userProvider.user!.uid); // Richiama la tua funzione qui
+              ownerProvider.fetchData(userProvider.data!.uid); // Richiama la tua funzione qui
             });
             // Naviga verso la schermata principale se non ci sei già
             if (ModalRoute.of(context)?.settings.name != AppRoutes.landing) {

@@ -23,15 +23,18 @@ class EditOwnerProfileScreen extends StatelessWidget {
 
     final ownerProvider = Provider.of<OwnerProvider>(context, listen: false);
 
+    final Map<String, dynamic> ownerData = {
+      'userUid': user!.uid,
+      'activityName': provider.activityNameController.text,
+      'activityDescription': provider.activityDescriptionController.text,
+      'activityLocation': provider.activityLocationController.text,
+      'activityWebsite': provider.activityWebsiteController.text,
+      'activityNumber': provider.activityNumberController.text,
+    };
+
     try {
-      final RequestError requestError = await ownerProvider.addOwner(
-        userUid: user!.uid,
-        activityName: provider.activityNameController.text,
-        activityDescription: provider.activityDescriptionController.text,
-        activityLocation: provider.activityLocationController.text,
-        activityWebsite: provider.activityWebsiteController.text,
-        activityNumber: provider.activityNumberController.text,
-      );
+      final RequestError requestError =
+          await ownerProvider.updateData(ownerData);
       return requestError;
     } catch (e) {
       return RequestError.error;

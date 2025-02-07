@@ -23,12 +23,15 @@ class EditProfileScreen extends StatelessWidget {
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
+    Map<String, dynamic> updates = {
+      'userId': user!.uid,
+      'displayName': provider.displayNameController.text,
+      'work': provider.selectedWorkId,
+      'isAvailable': provider.isAvailable
+    };
+
     try {
-      final RequestError requestError = await userProvider.updateUser(
-          userId: user!.uid,
-          displayName: provider.displayNameController.text,
-          work: provider.selectedWorkId,
-          isAvailable: provider.isAvailable);
+      final RequestError requestError = await userProvider.updateData(updates);
       return requestError;
     } catch (e) {
       return RequestError.error;
@@ -122,13 +125,16 @@ class EditProfileScreen extends StatelessWidget {
                                           switch (await _saveProfile(
                                               context, provider)) {
                                             RequestError.done => {
-                                              ShowMessageWidget(
-                                                message: AppTexts.profile
-                                                    .successMessage,
-                                              ),
+                                                ShowMessageWidget(
+                                                  message: AppTexts
+                                                      .profile.successMessage,
+                                                ),
                                               },
-                                            RequestError.error => ShowMessageWidget(message:AppTexts
-                                                .profile.errorMessage ,)
+                                            RequestError.error =>
+                                              ShowMessageWidget(
+                                                message: AppTexts
+                                                    .profile.errorMessage,
+                                              )
                                           },
                                           provider.updateLoading(false)
                                         });

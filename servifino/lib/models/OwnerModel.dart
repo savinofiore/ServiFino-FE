@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:servifino/interfaces/ModelInterface.dart';
 
-class OwnerModel {
+class OwnerModel implements ModelInterface {
   final String userUid;
   final String activityName;
   final String? activityDescription;
@@ -29,19 +30,27 @@ class OwnerModel {
     );
   }
 
-  OwnerModel updateLocally(
-      String newUserUid,
-      newActivityName,
-      newActivityLocation,
-      String? newActivityDescription,
-      newActivityWebsite,
-      newActivityNumber) {
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'userUid': userUid,
+      'activityName': activityName,
+      'activityDescription': activityDescription,
+      'activityLocation': activityLocation,
+      'activityWebsite': activityWebsite,
+      'activityNumber': activityNumber,
+    };
+  }
+
+  @override
+  OwnerModel updateLocally(Map<String, dynamic> updates) {
     return OwnerModel(
-        userUid: newUserUid,
-        activityName: newActivityName,
-        activityLocation: newActivityLocation,
-        activityDescription: newActivityDescription ?? activityDescription,
-        activityWebsite: newActivityWebsite ?? activityWebsite,
-        activityNumber: newActivityNumber ?? activityNumber);
+      userUid: updates['userUid'] ?? userUid,
+      activityName: updates['activityName'] ?? activityName,
+      activityDescription: updates['activityDescription'] ?? activityDescription,
+      activityLocation: updates['activityLocation'] ?? activityLocation,
+      activityWebsite: updates['activityWebsite'] ?? activityWebsite,
+      activityNumber: updates['activityNumber'] ?? activityNumber,
+    );
   }
 }

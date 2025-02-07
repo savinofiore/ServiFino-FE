@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:servifino/interfaces/ModelInterface.dart';
 
-class UserModel {
+class UserModel implements ModelInterface {
   final String uid;
   final String email;
   final String displayName;
   final bool disabled;
-  late final String? work;
+  final String? work;
   final bool isOwner;
-  late final bool isAvailable;
+  final bool isAvailable;
 
   UserModel({
     required this.uid,
@@ -19,7 +20,6 @@ class UserModel {
     required this.isAvailable,
   });
 
-  // Crea un oggetto UserModel da un documento Firestore
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
     var data = doc.data() as Map<String, dynamic>;
     return UserModel(
@@ -33,16 +33,29 @@ class UserModel {
     );
   }
 
-  UserModel updateLocally(String newDisplayName, String? newWork, bool newIsAvailable) {
-    return UserModel(
-      uid: uid,
-      email: email,
-      displayName: newDisplayName,
-      disabled: disabled,
-      work: newWork,
-      isOwner: isOwner,
-      isAvailable: newIsAvailable,
-    );
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'email': email,
+      'displayName': displayName,
+      'disabled': disabled,
+      'work': work,
+      'isOwner': isOwner,
+      'isAvailable': isAvailable,
+    };
   }
 
+  @override
+  UserModel updateLocally(Map<String, dynamic> updates) {
+    return UserModel(
+      uid: updates['uid'] ?? uid,
+      email: updates['email'] ?? email,
+      displayName: updates['displayName'] ?? displayName,
+      disabled: updates['disabled'] ?? disabled,
+      work: updates['work'] ?? work,
+      isOwner: updates['isOwner'] ?? isOwner,
+      isAvailable: updates['isAvailable'] ?? isAvailable,
+    );
+  }
 }

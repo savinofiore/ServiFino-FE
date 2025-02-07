@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Carica i dati dell'utente e aggiornali nel provider
       final userProvider = Provider.of<UserProvider>(context, listen: false);
-      userProvider.fetchUserDataWithUid(uid);
+      userProvider.fetchData(uid);
 
       // Naviga alla HomeScreen
       Navigator.pushReplacementNamed(context, AppRoutes.landing);

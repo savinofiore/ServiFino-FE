@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+/*import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:servifino/models/WorksModel.dart';
 
@@ -31,5 +31,45 @@ class WorksProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+}
+*/
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:servifino/interfaces/BaseProvider.dart';
+import 'package:servifino/models/WorksModel.dart';
+
+class WorksProvider extends BaseProvider<List<WorkModel>> {
+  List<WorkModel> _worksList = [];
+  bool _isLoading = false;
+
+  @override
+  List<WorkModel> get data => _worksList;
+  bool get isLoading => _isLoading;
+
+  @override
+  Future<void> fetchData(String uid) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      CollectionReference worksRef =
+      FirebaseFirestore.instance.collection('works');
+      QuerySnapshot worksSnapshot = await worksRef.get();
+
+      _worksList = worksSnapshot.docs
+          .map((doc) => WorkModel.fromFirestore(doc))
+          .toList();
+    } catch (e) {
+      print('Errore nel recupero dei dati: $e');
+      _worksList = [];
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  @override
+  Future<void> updateData(Map<String, dynamic> updates) async {
+    // Se serve un'update, si può implementare qui.
   }
 }
