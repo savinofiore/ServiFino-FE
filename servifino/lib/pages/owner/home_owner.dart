@@ -1,19 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:servifino/models/UserModel.dart';
 
-import '../../models/UserModel.dart';
-import '../../models/WorksModel.dart';
 
 class HomeOwner extends StatelessWidget {
   late UserModel? user;
+  late List<UserModel?> usersToBook;
+
   HomeOwner({
     super.key,
     required this.user,
+    required this.usersToBook
   });
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Home owner ${user?.displayName}'),
+
+        return usersToBook.isEmpty
+        ? const Center(child: CircularProgressIndicator())
+
+        : ListView.builder(
+      itemCount: usersToBook.length,
+      itemBuilder: (context, index) {
+        final UserModel? user = usersToBook[index];
+        return ListTile(
+          title: Text(user!.displayName),
+          subtitle: Text(user.email),
+          trailing:
+          Text(user.isAvailable ? 'Available' : 'Not Available'),
+        );
+      },
     );
   }
 }

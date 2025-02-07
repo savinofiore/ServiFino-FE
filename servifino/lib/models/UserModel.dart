@@ -58,4 +58,16 @@ class UserModel implements ModelInterface {
       isAvailable: updates['isAvailable'] ?? isAvailable,
     );
   }
+
+  // Metodo per convertire JSON in UserModel
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      uid: json['uid'] ?? '',
+      email: json['email'] ?? '',
+      displayName: json['displayName'] ?? '',
+      isAvailable: json['isAvailable'] ?? false,
+      isOwner: json['isOwner'] ?? false,
+      disabled: json['disabled'] ?? false,
+    );
+  }
 }

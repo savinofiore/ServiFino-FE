@@ -40,17 +40,18 @@ import 'package:servifino/models/WorksModel.dart';
 
 class WorksProvider extends BaseProvider<List<WorkModel>> {
   List<WorkModel> _worksList = [];
-  bool _isLoading = false;
+   bool _isLoading = false;
 
   @override
   List<WorkModel> get data => _worksList;
+
   bool get isLoading => _isLoading;
 
   @override
   Future<void> fetchData(String uid) async {
     _isLoading = true;
     notifyListeners();
-
+    if(_worksList.isNotEmpty) return;
     try {
       CollectionReference worksRef =
       FirebaseFirestore.instance.collection('works');

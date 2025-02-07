@@ -14,7 +14,7 @@ class LandingOwner extends BaseLandingPage {
     title: '${ownerProvider.data?.activityName ?? 'Configura attività'}',
     pages: [
       HistoryOwner(),
-      HomeOwner(user: userProvider.data),
+      HomeOwner(user: userProvider.data, usersToBook: ownerProvider.usersToBook,),
       ProfileOwner(user: userProvider.data, owner: ownerProvider.data),
     ],
   );
