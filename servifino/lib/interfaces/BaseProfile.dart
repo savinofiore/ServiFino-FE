@@ -75,7 +75,7 @@ abstract class ProfileBase extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
             child: Column(
               children: [
-                additionalWidget!,
+                additionalWidget ?? Container(),
                 ListTile(
                   leading: const Icon(Icons.edit, color: Colors.blueAccent),
                   title: Text(AppTexts.controllers.editProfileBtn),

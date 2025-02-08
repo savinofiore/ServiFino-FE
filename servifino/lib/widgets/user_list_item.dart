@@ -1,25 +1,34 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:servifino/models/ReservationModel.dart';
 import 'package:servifino/models/UserModel.dart';
+import 'package:servifino/providers/modelsProviders/owner_provider.dart';
+import 'package:servifino/widgets/date_field.dart';
+import 'package:servifino/widgets/show_confirmation_dialog.dart';
+import 'package:servifino/widgets/show_message.dart';
 
 class UserListItem extends StatelessWidget {
   final UserModel? user;
-  final VoidCallback onBookPressed;
 
   const UserListItem({
     required this.user,
-    required this.onBookPressed,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool _isLoading = false;
+    DateTime? selectedDateTime;
+
     // Ottieni le dimensioni dello schermo
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     // Definisci dimensioni di base per mobile e limiti per desktop
-    final baseWidth = 400.0; // Larghezza di riferimento per dispositivi mobili
-    final maxWidth = 600.0; // Larghezza massima per evitare elementi troppo grandi su desktop
+    const baseWidth = 400.0; // Larghezza di riferimento per dispositivi mobili
+    const maxWidth =
+        600.0; // Larghezza massima per evitare elementi troppo grandi su desktop
 
     // Calcola le dimensioni in modo adattivo
     final responsiveWidth = screenWidth > maxWidth ? maxWidth : screenWidth;
@@ -37,7 +46,9 @@ class UserListItem extends StatelessWidget {
             padding: EdgeInsets.all(12.0 * scaleFactor), // Scala il padding
             child: Row(
               children: [
-                Icon(Icons.person, size: 40.0 * scaleFactor, color: Colors.blue), // Scala l'icona
+                Icon(Icons.person,
+                    size: 40.0 * scaleFactor,
+                    color: Colors.blue), // Scala l'icona
                 SizedBox(width: 16.0 * scaleFactor), // Scala lo spazio
                 Expanded(
                   child: Column(
@@ -82,8 +93,11 @@ class UserListItem extends StatelessWidget {
                 vertical: 4.0 * scaleFactor, // Scala il padding
               ),
               decoration: BoxDecoration(
-                color: user!.isAvailable ? Colors.green.withOpacity(0.2) : Colors.red.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12.0 * scaleFactor), // Scala il bordo
+                color: user!.isAvailable
+                    ? Colors.green.withOpacity(0.2)
+                    : Colors.red.withOpacity(0.2),
+                borderRadius:
+                    BorderRadius.circular(12.0 * scaleFactor), // Scala il bordo
               ),
               child: Text(
                 user!.isAvailable ? 'Disponibile' : 'Non Disponibile',
@@ -100,11 +114,38 @@ class UserListItem extends StatelessWidget {
             bottom: 8.0 * scaleFactor, // Scala la posizione
             right: 8.0 * scaleFactor, // Scala la posizione
             child: ElevatedButton(
-              onPressed: onBookPressed,
+              onPressed: () {
+                showConfirmationDialog(context,
+                    title: 'Prenota prestazione',
+                    message: 'Vuoi confermare la tua prenotazione?',
+                    additionalWidget: DateField(onDateTimeSelected: (dateTime) {
+                  selectedDateTime = dateTime;
+                }), onConfirm: () async {
+                  //log(selectedDateTime.toString());
+                  final ownerProvider =
+                      Provider.of<OwnerProvider>(context, listen: false);
+                  final Map<String, dynamic> reservationInfo = {
+                    'workerId': user!.uid,
+                    'owner': ownerProvider.data!.toMap(),
+                    'reservationDate': selectedDateTime?.toIso8601String(),
+                    'reservationStatus': ReservationStatus.waiting.toString()
+                  };
+
+                  try {
+                    await ownerProvider.addReservation(reservationInfo).then((_){
+                      const ShowMessageWidget(message: 'Prenotazione inserita',);
+                    });
+                  } catch (e) {
+                    const ShowMessageWidget(message: 'Prenotazione non inserita',);
+                    log('Error $e');
+                  }
+                });
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0 * scaleFactor), // Scala il bordo
+                  borderRadius: BorderRadius.circular(
+                      20.0 * scaleFactor), // Scala il bordo
                 ),
                 padding: EdgeInsets.symmetric(
                   horizontal: 16.0 * scaleFactor, // Scala il padding

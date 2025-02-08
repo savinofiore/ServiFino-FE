@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:servifino/providers/modelsProviders/owner_provider.dart';
@@ -18,6 +20,7 @@ class LandingScreen extends StatelessWidget {
     final worksProvider = Provider.of<WorksProvider>(context);
 
     works = worksProvider.data;
+    log('work $works');
 
     return userProvider.data?.isOwner == true
         ? LandingOwner(

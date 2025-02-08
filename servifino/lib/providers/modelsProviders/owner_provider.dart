@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:servifino/interfaces/BaseProvider.dart';
 import 'package:servifino/models/OwnerModel.dart';
+import 'package:servifino/models/ReservationModel.dart';
 import 'package:servifino/models/UserModel.dart';
 import 'package:servifino/utils/request_errors.dart';
 
@@ -60,6 +61,7 @@ class OwnerProvider extends BaseProvider<OwnerModel> {
         final List<dynamic> usersData = response.data['users'];
         _usersToBook =
             usersData.map((user) => UserModel.fromJson(user)).toList();
+       // log(response.data['users'].toString());
       } else {
         log('nessun dato trovato');
       }
@@ -70,12 +72,16 @@ class OwnerProvider extends BaseProvider<OwnerModel> {
     }
   }
 
-  Future<RequestError> addReservation(Map<String, dynamic> updates) async {
+  Future<RequestError> addReservation(
+      Map<String, dynamic> reservationInfo) async {
+
     try {
       HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl(
-          'https://us-central1-servifino.cloudfunctions.net/addOrUpdateOwner');
-      await callable.call(updates);
-      _owner = _owner!.updateLocally(updates);
+        //  'https://us-central1-servifino.cloudfunctions.net/addOrUpdateOwner'
+        'http://127.0.0.1:5001/servifino/us-central1/addReservation'
+        );
+      await callable.call(reservationInfo);
+      //_owner = _owner!.updateLocally(updates);
       notifyListeners();
       return RequestError.done;
     } catch (e) {
@@ -83,8 +89,4 @@ class OwnerProvider extends BaseProvider<OwnerModel> {
       return RequestError.error;
     }
   }
-
-
-
-
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:servifino/interfaces/ModelInterface.dart';
+import 'package:servifino/models/WorksModel.dart';
 
 class UserModel implements ModelInterface {
   final String uid;
@@ -68,6 +69,7 @@ class UserModel implements ModelInterface {
       isAvailable: json['isAvailable'] ?? false,
       isOwner: json['isOwner'] ?? false,
       disabled: json['disabled'] ?? false,
+      work: json['work'] ?? null
     );
   }
 }

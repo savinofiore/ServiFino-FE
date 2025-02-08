@@ -6,14 +6,19 @@ void showConfirmationDialog(BuildContext context, {
   required String title,
   required String message,
   required VoidCallback onConfirm,
+  final Widget? additionalWidget,
 }) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(title),
-        content: Text(message),
+        content: Container(child:Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [Text(message), if(additionalWidget != null) additionalWidget],
+        )),
         actions: <Widget>[
+          //additionalWidget ?? Container(),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop(); // Chiudi il dialog

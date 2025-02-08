@@ -1,11 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:servifino/interfaces/ModelInterface.dart';
 import 'package:servifino/models/OwnerModel.dart';
 import 'package:servifino/utils/reservation_status.dart';
 
 class ReservationModel implements ModelInterface {
   final String workerId;
-  final OwnerModel owner;
-  final DateTime reservationDate;
+  final OwnerModel? owner;
+  final DateTime? reservationDate;
   final ReservationStatus reservationStatus;
   final int? rating;
   final String? additionalInformations;
@@ -23,9 +24,10 @@ class ReservationModel implements ModelInterface {
   Map<String, dynamic> toMap() {
     return {
       'workerId': workerId,
-      'owner': owner.toMap(),
-      'reservationDate': reservationDate,
-      'reservationStatus': reservationStatus,
+      'owner': owner!.toMap(),
+     //'reservationDate': reservationDate,
+      'reservationDate': reservationDate?.toIso8601String(), // Stringa compatibile
+      'reservationStatus': reservationStatus.toString(),
       'rating': rating,
       'additionalInformations': additionalInformations,
     };
@@ -36,4 +38,11 @@ class ReservationModel implements ModelInterface {
     // TODO: implement updateLocally
     throw UnimplementedError();
   }
+}
+
+enum ReservationStatus {
+  waiting,
+  approved,
+  rejected,
+  evaluated
 }

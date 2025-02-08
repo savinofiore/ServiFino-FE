@@ -22,7 +22,7 @@ class LandingWorker extends BaseLandingPage {
   );
 
   static String _getTitle(UserProvider userProvider, List<WorkModel>? works) {
-    String workToRemove = dotenv.env['WORK_TO_REMOVE'] ?? '';
+    String workToRemove = 'owner';
     works?.removeWhere((work) => work.id == workToRemove);
     return '${AppTexts.title} ${works?.firstWhere((work) => work.id == userProvider.data?.work, orElse: () => WorkModel(id: '', name: '', description: '')).name}';
   }
