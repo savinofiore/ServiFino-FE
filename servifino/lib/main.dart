@@ -19,10 +19,9 @@ import 'package:provider/provider.dart';
 import 'screens/authentication/login.dart';
 
 Future<void> main() async {
-  //await dotenv.load(fileName: ".env.production");
-  // Assicurati che il binding di Flutter sia inizializzato
+  // Inizializzazione binding Flutter
   WidgetsFlutterBinding.ensureInitialized();
-  // Inizializza Firebase
+  // Inizializzazione Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -35,6 +34,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
+      // Inizializzazione providers
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => RegisterProvider()),
@@ -49,13 +49,15 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        // Rotta iniziale
         initialRoute: AppRoutes.authWrapper,
+        // Dichiarazione rotte
         routes: {
           AppRoutes.authWrapper: (context) => AuthWrapper(),
           AppRoutes.landing: (context) => LandingScreen(),
           AppRoutes.auth.login: (context) => LoginScreen(),
           AppRoutes.auth.register: (context) => RegisterScreen(),
-          AppRoutes.worker.home: (context) => HomeWorker(user: null, works: null),
+          AppRoutes.worker.home: (context) => HomeWorker(user: null, works: null, reservations: [],),
           AppRoutes.worker.profile: (context) => ProfileWorker(user: null, works: null),
           AppRoutes.worker.history: (context) => HistoryWorker(user: null, works: null),
         },

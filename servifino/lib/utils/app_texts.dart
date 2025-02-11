@@ -1,7 +1,5 @@
 import 'dart:core';
 
-import 'package:servifino/pages/worker/profile_worker.dart';
-
 class AppTexts {
   static const title = 'ServiFino';
   // Login Screen
@@ -16,8 +14,14 @@ class AppTexts {
   static UtilsString utils = UtilsString();
   // BottomBar
   static BottomBarTexts bottomBarTexts = BottomBarTexts();
-  //Profile
-static EditProfileWorker profile = EditProfileWorker();
+  //Profile Worker
+  static EditProfileWorker profileWorker = EditProfileWorker();
+  //Profile Owner
+  static EditProfileOwner profileOwner = EditProfileOwner();
+  //User ListTile
+  static UserListTileTexts usrListTile = UserListTileTexts();
+  // Reservation List Item
+  static ReservationListItemTexts resListItem = ReservationListItemTexts();
 }
 
 class LoginScreenTexts {
@@ -33,9 +37,10 @@ class RegisterScreenTexts {
   final String alreadyHaveAccount = 'Hai già un account? Accedi';
   final String passErrMessage = 'Le password non corrispondono';
   final String textInfo1 = 'Credenziali di accesso al profilo.';
-  final String textInfo2 ='Questi dati verranno visualizzati dagli altri utenti.';
-  final String textInfo3 ='Utilizza l\'app per registrare la tua attività.';
-  final String textInfo4 ='Registra attività';
+  final String textInfo2 =
+      'Questi dati verranno visualizzati dagli altri utenti.';
+  final String textInfo3 = 'Utilizza l\'app per registrare la tua attività.';
+  final String textInfo4 = 'Registra attività';
   final String succRegMessagge = 'Registrazione avvenuta con successo!';
   final String errRegMessagge = 'Errore durante la registrazione';
 }
@@ -45,19 +50,38 @@ class LandingScreenTexts {
   final String landingTitle = 'Home';
   final String welcomeMessage = 'Benvenuto nella tua Home!';
   final String assignTitle = 'Configura profilo';
-  final String activityName ='Nome Locale';
-  final String selectWork ='Seleziona lavoro';
-  final String activityDescription ='Descrizione attività';
-  final String availabilty ='Disponibile per lavorare';
-  final String activityLocation ='Località attività';
-  final String activityWebSite ='Sito web attività';
-  final String activityNumber ='Contatto telefonico attività';
+  final String activityName = 'Nome Locale';
+  final String selectWork = 'Seleziona lavoro';
+  final String activityDescription = 'Descrizione attività';
+  final String availabilty = 'Disponibile per lavorare';
+  final String activityLocation = 'Località attività';
+  final String activityWebSite = 'Sito web attività';
+  final String activityNumber = 'Contatto telefonico attività';
+  final String activityNameDefault = 'Configura attività';
 }
 
 class EditProfileWorker {
   final String editProfileAppBarTitle = 'Modifica profilo';
   final String successMessage = 'Modifica avvenuta con successo!';
-  final String  errorMessage = 'Errore nella modifica.';
+  final String errorMessage = 'Errore nella modifica.';
+}
+
+class EditProfileOwner {
+  final String editProfileAppBarTitle = 'Modifica profilo';
+  final String successMessage = 'Modifica avvenuta con successo!';
+  final String errorMessage = 'Errore nella modifica.';
+  final String defaultActivityName = 'Configura attività';
+  final String editActivity = 'Modifica attività';
+  final String editProfileOwner = 'Modifica Profilo Proprietario';
+  final String actName = 'Nome Attività';
+  final String actNameMsg = 'Il nome dell\'attività è obbligatorio';
+  final String actDesc = 'Descrizione Attività';
+  final String actAddress = 'Indirizzo Attività';
+  final String actAddressError = 'L\'indirizzo dell\'attività è obbligatorio';
+  final String actWebSite = 'Sito Web';
+  final String actNumber = 'Numero di Telefono';
+  final String actEditErrMessage = 'Errore durante il salvataggio del profilo.';
+  final String actEditSuccMessage = 'Profilo salvato con successo!';
 }
 
 class ControllersText {
@@ -71,7 +95,8 @@ class ControllersText {
   final String passwordError = 'La password deve avere almeno 6 caratteri';
   final String confPassword = 'Conferma Password';
   final String confPasswordHint = 'Conferma la tua password';
-  final String confPasswordError = 'Le password devono essere valide e coincidere';
+  final String confPasswordError =
+      'Le password devono essere valide e coincidere';
   final String displayName = 'Nome utente';
   final String displayNameHint = 'Inserisci il tuo nome';
   final String displayNameError = 'Inserisci un nome utente';
@@ -105,4 +130,19 @@ class BottomBarTexts {
   final String thirdIconText = 'Profilo';
 }
 
+class UserListTileTexts {
+  final String defaultWork = 'non specificato';
+  final String available = 'Disponibile';
+  final String unavailable = 'Non disponibile';
+  final String showDialogTitle = 'Prenota prestazione';
+  final String showDialogMessage = 'Vuoi confermare la prenotazione?';
+  final String successMessage = 'Prenotazione inserita';
+  final String errorMessage = 'Prenotazione non inserita';
+  final String btnText = 'Prenota';
+}
 
+class ReservationListItemTexts {
+  final String done = 'Accetta';
+  final String reject = 'Rifiuta';
+  final String info = 'Info';
+}

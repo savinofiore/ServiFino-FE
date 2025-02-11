@@ -30,6 +30,18 @@ class OwnerModel implements ModelInterface {
     );
   }
 
+
+  factory OwnerModel.fromJson(Map<String, dynamic> json){
+    return OwnerModel(
+      userUid: json['userUid'] as String,
+      activityName: json['activityName'] as String,
+      activityDescription: json['activityDescription'] as String,
+      activityLocation: json['activityLocation'] as String,
+      activityWebsite: json['activityWebsite'] as String,
+      activityNumber: json['activityNumber'] as String,
+    );
+  }
+
   @override
   Map<String, dynamic> toMap() {
     return {
@@ -41,6 +53,7 @@ class OwnerModel implements ModelInterface {
       'activityNumber': activityNumber,
     };
   }
+
 
   @override
   OwnerModel updateLocally(Map<String, dynamic> updates) {

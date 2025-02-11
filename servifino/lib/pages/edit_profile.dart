@@ -41,7 +41,7 @@ class EditUserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppTexts.profile.editProfileAppBarTitle),
+        title: Text(AppTexts.profileWorker.editProfileAppBarTitle),
       ),
       body: ChangeNotifierProvider(
         create: (_) => ProfileEditProvider(works: works, user: user),
@@ -128,13 +128,13 @@ class EditUserPage extends StatelessWidget {
                                             RequestError.done => {
                                                 ShowMessageWidget(
                                                   message: AppTexts
-                                                      .profile.successMessage,
+                                                      .profileWorker.successMessage,
                                                 ),
                                               },
                                             RequestError.error =>
                                               ShowMessageWidget(
                                                 message: AppTexts
-                                                    .profile.errorMessage,
+                                                    .profileWorker.errorMessage,
                                               )
                                           },
                                           provider.updateLoading(false)

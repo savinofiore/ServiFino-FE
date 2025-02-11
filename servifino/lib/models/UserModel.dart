@@ -11,6 +11,7 @@ class UserModel implements ModelInterface {
   final bool isOwner;
   final bool isAvailable;
 
+
   UserModel({
     required this.uid,
     required this.email,

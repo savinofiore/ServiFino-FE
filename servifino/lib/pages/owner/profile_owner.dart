@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:servifino/interfaces/BaseProfile.dart';
 import 'package:servifino/models/OwnerModel.dart';
 import 'package:servifino/pages/owner/edit_profile_owner.dart';
+import 'package:servifino/utils/app_texts.dart';
 import '../../models/UserModel.dart';
 
 class ProfileOwner extends ProfileBase {
@@ -12,7 +13,7 @@ class ProfileOwner extends ProfileBase {
     required UserModel? user,
     required this.owner,
   }) : super(
-            title: owner?.activityName ?? 'Configura attività',
+            title: owner?.activityName ?? AppTexts.profileOwner.defaultActivityName,
             subtitle: user?.displayName ?? '',
             user: user,
             works: null,
@@ -31,7 +32,7 @@ class OwnerProfileAdditionalWidget extends StatelessWidget {
       children: [
         ListTile(
           leading: const Icon(Icons.edit, color: Colors.blueAccent),
-          title: Text('Modifica attività'),
+          title: Text(AppTexts.profileOwner.editActivity),
           trailing: const Icon(Icons.arrow_forward_ios, size: 16),
           onTap: () {
             Navigator.push(

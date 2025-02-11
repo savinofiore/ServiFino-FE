@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:servifino/interfaces/BaseProvider.dart';
 import 'package:servifino/models/OwnerModel.dart';
-import 'package:servifino/models/ReservationModel.dart';
 import 'package:servifino/models/UserModel.dart';
 import 'package:servifino/utils/request_errors.dart';
 
@@ -18,7 +17,6 @@ class OwnerProvider extends BaseProvider<OwnerModel> {
 
   @override
   Future<void> fetchData(String uid) async {
-    // if(_owner != null) return;
     try {
       DocumentSnapshot ownerDoc =
           await FirebaseFirestore.instance.collection('owners').doc(uid).get();

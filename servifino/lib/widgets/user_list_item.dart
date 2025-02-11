@@ -1,9 +1,8 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:servifino/models/ReservationModel.dart';
 import 'package:servifino/models/UserModel.dart';
 import 'package:servifino/providers/modelsProviders/owner_provider.dart';
+import 'package:servifino/utils/app_texts.dart';
 import 'package:servifino/widgets/date_field.dart';
 import 'package:servifino/widgets/show_confirmation_dialog.dart';
 import 'package:servifino/widgets/show_message.dart';
@@ -18,18 +17,15 @@ class UserListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool _isLoading = false;
+    //bool _isLoading = false;
     DateTime? selectedDateTime;
-
     // Ottieni le dimensioni dello schermo
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
     // Definisci dimensioni di base per mobile e limiti per desktop
     const baseWidth = 400.0; // Larghezza di riferimento per dispositivi mobili
     const maxWidth =
         600.0; // Larghezza massima per evitare elementi troppo grandi su desktop
-
     // Calcola le dimensioni in modo adattivo
     final responsiveWidth = screenWidth > maxWidth ? maxWidth : screenWidth;
     final scaleFactor = responsiveWidth / baseWidth;
@@ -63,20 +59,20 @@ class UserListItem extends StatelessWidget {
                       ),
                       SizedBox(height: 4.0 * scaleFactor), // Scala lo spazio
                       Text(
-                        user!.work ?? 'non specificato',
+                        user!.work ?? AppTexts.usrListTile.defaultWork,
                         style: TextStyle(
                           fontSize: 14.0 * scaleFactor, // Scala il font size
                           color: Colors.grey[600],
                         ),
                       ),
                       SizedBox(height: 4.0 * scaleFactor), // Scala lo spazio
-                      Text(
+                      /*Text(
                         'Valutazione',
                         style: TextStyle(
                           fontSize: 14.0 * scaleFactor, // Scala il font size
                           color: Colors.grey[600],
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                 ),
@@ -100,7 +96,9 @@ class UserListItem extends StatelessWidget {
                     BorderRadius.circular(12.0 * scaleFactor), // Scala il bordo
               ),
               child: Text(
-                user!.isAvailable ? 'Disponibile' : 'Non Disponibile',
+                user!.isAvailable
+                    ? AppTexts.usrListTile.available
+                    : AppTexts.usrListTile.unavailable,
                 style: TextStyle(
                   fontSize: 12.0 * scaleFactor, // Scala il font size
                   color: user!.isAvailable ? Colors.green : Colors.red,
@@ -116,8 +114,8 @@ class UserListItem extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 showConfirmationDialog(context,
-                    title: 'Prenota prestazione',
-                    message: 'Vuoi confermare la tua prenotazione?',
+                    title: AppTexts.usrListTile.showDialogTitle,
+                    message: AppTexts.usrListTile.showDialogMessage,
                     additionalWidget: DateField(onDateTimeSelected: (dateTime) {
                   selectedDateTime = dateTime;
                 }), onConfirm: () async {
@@ -128,16 +126,21 @@ class UserListItem extends StatelessWidget {
                     'workerId': user!.uid,
                     'owner': ownerProvider.data!.toMap(),
                     'reservationDate': selectedDateTime?.toIso8601String(),
-                    'reservationStatus': ReservationStatus.waiting.toString()
+                    //'reservationStatus': ReservationStatus.waiting.toString()
                   };
 
                   try {
-                    await ownerProvider.addReservation(reservationInfo).then((_){
-                      const ShowMessageWidget(message: 'Prenotazione inserita',);
+                    await ownerProvider
+                        .addReservation(reservationInfo)
+                        .then((_) {
+                      ShowMessageWidget(
+                          message: AppTexts.usrListTile.successMessage);
                     });
                   } catch (e) {
-                    const ShowMessageWidget(message: 'Prenotazione non inserita',);
-                    log('Error $e');
+                    ShowMessageWidget(
+                      message: AppTexts.usrListTile.errorMessage,
+                    );
+                   // log('Error $e');
                   }
                 });
               },
@@ -153,7 +156,7 @@ class UserListItem extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Prenota',
+                AppTexts.usrListTile.btnText,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 14.0 * scaleFactor, // Scala il font size

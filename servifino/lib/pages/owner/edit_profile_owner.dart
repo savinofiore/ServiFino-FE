@@ -4,6 +4,7 @@ import 'package:servifino/models/OwnerModel.dart';
 import 'package:servifino/models/UserModel.dart';
 import 'package:servifino/providers/pagesProviders/edit_profile_owner_provider.dart';
 import 'package:servifino/providers/modelsProviders/owner_provider.dart';
+import 'package:servifino/utils/app_texts.dart';
 import 'package:servifino/utils/request_errors.dart';
 
 class EditOwnerProfileScreen extends StatelessWidget {
@@ -50,7 +51,7 @@ class EditOwnerProfileScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Modifica Profilo Proprietario'),
+        title:  Text(AppTexts.profileOwner.editProfileOwner),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -66,13 +67,13 @@ class EditOwnerProfileScreen extends StatelessWidget {
                         children: [
                           TextFormField(
                             controller: provider.activityNameController,
-                            decoration: const InputDecoration(
-                              labelText: 'Nome Attività',
+                            decoration:  InputDecoration(
+                              labelText: AppTexts.profileOwner.actName,
                               prefixIcon: Icon(Icons.business),
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Il nome dell\'attività è obbligatorio';
+                                return AppTexts.profileOwner.actNameMsg;
                               }
                               return null;
                             },
@@ -80,21 +81,21 @@ class EditOwnerProfileScreen extends StatelessWidget {
                           const SizedBox(height: 16),
                           TextFormField(
                             controller: provider.activityDescriptionController,
-                            decoration: const InputDecoration(
-                              labelText: 'Descrizione Attività',
+                            decoration:  InputDecoration(
+                              labelText: AppTexts.profileOwner.actDesc,
                               prefixIcon: Icon(Icons.description),
                             ),
                           ),
                           const SizedBox(height: 16),
                           TextFormField(
                             controller: provider.activityLocationController,
-                            decoration: const InputDecoration(
-                              labelText: 'Indirizzo Attività',
+                            decoration:  InputDecoration(
+                              labelText: AppTexts.profileOwner.actAddress ,
                               prefixIcon: Icon(Icons.location_on),
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'L\'indirizzo dell\'attività è obbligatorio';
+                                return AppTexts.profileOwner.actAddressError;
                               }
                               return null;
                             },
@@ -102,16 +103,16 @@ class EditOwnerProfileScreen extends StatelessWidget {
                           const SizedBox(height: 16),
                           TextFormField(
                             controller: provider.activityWebsiteController,
-                            decoration: const InputDecoration(
-                              labelText: 'Sito Web',
+                            decoration:  InputDecoration(
+                              labelText:  AppTexts.profileOwner.actWebSite,
                               prefixIcon: Icon(Icons.web),
                             ),
                           ),
                           const SizedBox(height: 16),
                           TextFormField(
                             controller: provider.activityNumberController,
-                            decoration: const InputDecoration(
-                              labelText: 'Numero di Telefono',
+                            decoration:  InputDecoration(
+                              labelText:  AppTexts.profileOwner.actNumber,
                               prefixIcon: Icon(Icons.phone),
                             ),
                           ),
@@ -123,22 +124,22 @@ class EditOwnerProfileScreen extends StatelessWidget {
                                   await _saveProfile(context, provider);
                               if (result == RequestError.done) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                   SnackBar(
                                     content:
-                                        Text('Profilo salvato con successo!'),
+                                        Text( AppTexts.profileOwner.actEditSuccMessage ),
                                   ),
                                 );
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                   SnackBar(
                                     content: Text(
-                                        'Errore durante il salvataggio del profilo.'),
+                                        AppTexts.profileOwner.actAddressError),
                                   ),
                                 );
                               }
                               provider.updateLoading(false);
                             },
-                            child: const Text('Salva'),
+                            child:  Text(AppTexts.controllers.save),
                           ),
                         ],
                       ),

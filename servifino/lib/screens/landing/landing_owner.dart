@@ -12,7 +12,7 @@ class LandingOwner extends BaseLandingPage {
     required UserProvider userProvider,
     required OwnerProvider ownerProvider,
   }) : super(
-    title: '${AppTexts.title} - ${ownerProvider.data?.activityName ?? 'Configura attività'}',
+    title: '${AppTexts.title} - ${ownerProvider.data?.activityName ?? AppTexts.landing.activityNameDefault}',
     pages: [
       HistoryOwner(),
       HomeOwner(user: userProvider.data, usersToBook: ownerProvider.usersToBook,),

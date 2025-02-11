@@ -21,7 +21,16 @@ class AuthWrapper extends StatelessWidget {
         await ownerProvider.fetchData(snapshot.data!.uid);
         await ownerProvider.fetchAvailableNonOwnerUsers();
       }
+      await userProvider.fetchReservations();
     }
+
+    /**
+     * Se l'utente è autenticato, proseguo nella Landing, altrimenti torno al login.
+     * FirebaseAuth.instance.authStateChanges() riconosce il cambiamento di stato di un utente.
+     *
+     * Se l'utente è autenticato, recupera i dati che serviranno in seguito, in modo da richiamare
+     * il backend meno volte possibili.
+     **/
 
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
