@@ -20,8 +20,10 @@ class AuthWrapper extends StatelessWidget {
       if (userProvider.data!.isOwner) {
         await ownerProvider.fetchData(snapshot.data!.uid);
         await ownerProvider.fetchAvailableNonOwnerUsers();
+        await ownerProvider.fetchReservations();
+      } else{
+        await userProvider.fetchReservations();
       }
-      await userProvider.fetchReservations();
     }
 
     /**

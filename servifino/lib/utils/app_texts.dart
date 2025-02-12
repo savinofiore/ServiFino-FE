@@ -22,6 +22,9 @@ class AppTexts {
   static UserListTileTexts usrListTile = UserListTileTexts();
   // Reservation List Item
   static ReservationListItemTexts resListItem = ReservationListItemTexts();
+  //History Owner
+  static HistoryOwnerTexts historyOwner = HistoryOwnerTexts();
+
 }
 
 class LoginScreenTexts {
@@ -145,4 +148,11 @@ class ReservationListItemTexts {
   final String done = 'Accetta';
   final String reject = 'Rifiuta';
   final String info = 'Info';
+}
+
+class HistoryOwnerTexts {
+  final String emptyList = 'Nessuna prenotazione inviata';
+  final String waitingStatus = 'In attesa';
+  final String acceptedStatus = 'Accettata';
+  final String rejectedStatus = 'Rifiutata';
 }

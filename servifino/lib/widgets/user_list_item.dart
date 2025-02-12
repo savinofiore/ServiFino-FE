@@ -1,9 +1,13 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:servifino/models/ReservationModel.dart';
 import 'package:servifino/models/UserModel.dart';
 import 'package:servifino/providers/modelsProviders/owner_provider.dart';
 import 'package:servifino/utils/app_texts.dart';
-import 'package:servifino/widgets/date_field.dart';
+import 'package:servifino/utils/request_errors.dart';
+import 'package:servifino/widgets/add_reservation_field.dart';
 import 'package:servifino/widgets/show_confirmation_dialog.dart';
 import 'package:servifino/widgets/show_message.dart';
 
@@ -19,6 +23,8 @@ class UserListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     //bool _isLoading = false;
     DateTime? selectedDateTime;
+    String? selectedMessage = '';
+    TextEditingController _messageController = TextEditingController();
     // Ottieni le dimensioni dello schermo
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -36,132 +42,156 @@ class UserListItem extends StatelessWidget {
         horizontal: screenWidth * 0.04, // 4% della larghezza dello schermo
       ),
       elevation: 2,
-      child: Stack(
+      child: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.all(12.0 * scaleFactor), // Scala il padding
-            child: Row(
-              children: [
-                Icon(Icons.person,
-                    size: 40.0 * scaleFactor,
-                    color: Colors.blue), // Scala l'icona
-                SizedBox(width: 16.0 * scaleFactor), // Scala lo spazio
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        user!.displayName,
-                        style: TextStyle(
-                          fontSize: 18.0 * scaleFactor, // Scala il font size
-                          fontWeight: FontWeight.bold,
-                        ),
+          Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(12.0 * scaleFactor), // Scala il padding
+                child: Row(
+                  children: [
+                    Icon(Icons.person,
+                        size: 40.0 * scaleFactor,
+                        color: Colors.blue), // Scala l'icona
+                    SizedBox(width: 16.0 * scaleFactor), // Scala lo spazio
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            user!.displayName,
+                            style: TextStyle(
+                              fontSize:
+                                  18.0 * scaleFactor, // Scala il font size
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                              height: 4.0 * scaleFactor), // Scala lo spazio
+                          Text(
+                            user!.work ?? AppTexts.usrListTile.defaultWork,
+                            style: TextStyle(
+                              fontSize:
+                                  14.0 * scaleFactor, // Scala il font size
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 4.0 * scaleFactor,
+                          ), // Scala lo spazio
+                        ],
                       ),
-                      SizedBox(height: 4.0 * scaleFactor), // Scala lo spazio
-                      Text(
-                        user!.work ?? AppTexts.usrListTile.defaultWork,
-                        style: TextStyle(
-                          fontSize: 14.0 * scaleFactor, // Scala il font size
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                      SizedBox(height: 4.0 * scaleFactor), // Scala lo spazio
-                      /*Text(
-                        'Valutazione',
-                        style: TextStyle(
-                          fontSize: 14.0 * scaleFactor, // Scala il font size
-                          color: Colors.grey[600],
-                        ),
-                      ),*/
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              // Stato "Disponibile" in alto a destra
+              Positioned(
+                top: 8.0 * scaleFactor, // Scala la posizione
+                right: 8.0 * scaleFactor, // Scala la posizione
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 8.0 * scaleFactor, // Scala il padding
+                    vertical: 4.0 * scaleFactor, // Scala il padding
+                  ),
+                  decoration: BoxDecoration(
+                    color: user!.isAvailable
+                        ? Colors.green.withOpacity(0.2)
+                        : Colors.red.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(
+                        12.0 * scaleFactor), // Scala il bordo
+                  ),
+                  child: Text(
+                    user!.isAvailable
+                        ? AppTexts.usrListTile.available
+                        : AppTexts.usrListTile.unavailable,
+                    style: TextStyle(
+                      fontSize: 12.0 * scaleFactor, // Scala il font size
+                      color: user!.isAvailable ? Colors.green : Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              // Pulsante "Prenota" in basso a destra
+            ],
           ),
-          // Stato "Disponibile" in alto a destra
-          Positioned(
-            top: 8.0 * scaleFactor, // Scala la posizione
-            right: 8.0 * scaleFactor, // Scala la posizione
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 8.0 * scaleFactor, // Scala il padding
-                vertical: 4.0 * scaleFactor, // Scala il padding
-              ),
-              decoration: BoxDecoration(
-                color: user!.isAvailable
-                    ? Colors.green.withOpacity(0.2)
-                    : Colors.red.withOpacity(0.2),
-                borderRadius:
-                    BorderRadius.circular(12.0 * scaleFactor), // Scala il bordo
-              ),
-              child: Text(
-                user!.isAvailable
-                    ? AppTexts.usrListTile.available
-                    : AppTexts.usrListTile.unavailable,
-                style: TextStyle(
-                  fontSize: 12.0 * scaleFactor, // Scala il font size
-                  color: user!.isAvailable ? Colors.green : Colors.red,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          // Pulsante "Prenota" in basso a destra
-          Positioned(
-            bottom: 8.0 * scaleFactor, // Scala la posizione
-            right: 8.0 * scaleFactor, // Scala la posizione
-            child: ElevatedButton(
-              onPressed: () {
-                showConfirmationDialog(context,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  showConfirmationDialog(
+                    context,
                     title: AppTexts.usrListTile.showDialogTitle,
                     message: AppTexts.usrListTile.showDialogMessage,
-                    additionalWidget: DateField(onDateTimeSelected: (dateTime) {
-                  selectedDateTime = dateTime;
-                }), onConfirm: () async {
-                  //log(selectedDateTime.toString());
-                  final ownerProvider =
-                      Provider.of<OwnerProvider>(context, listen: false);
-                  final Map<String, dynamic> reservationInfo = {
-                    'workerId': user!.uid,
-                    'owner': ownerProvider.data!.toMap(),
-                    'reservationDate': selectedDateTime?.toIso8601String(),
-                    //'reservationStatus': ReservationStatus.waiting.toString()
-                  };
+                    additionalWidget: AddReservationField(
+                      updateSelected: (dateTime, message) {
+                        selectedDateTime = dateTime;
+                        selectedMessage = message;
+                      },
+                    ),
+                    onConfirm: () async {
 
-                  try {
-                    await ownerProvider
-                        .addReservation(reservationInfo)
-                        .then((_) {
-                      ShowMessageWidget(
-                          message: AppTexts.usrListTile.successMessage);
-                    });
-                  } catch (e) {
-                    ShowMessageWidget(
-                      message: AppTexts.usrListTile.errorMessage,
-                    );
-                   // log('Error $e');
-                  }
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                      20.0 * scaleFactor), // Scala il bordo
+
+                      final ownerProvider =
+                          Provider.of<OwnerProvider>(context, listen: false);
+                      final Map<String, dynamic> reservationInfo = {
+                        'user': user!.toMap(),
+                        'owner': ownerProvider.data!.toMap(),
+                        'reservationDate': selectedDateTime?.toIso8601String(),
+                        'reservationStatus': 'waiting',
+                        //'rating': 0
+                        'message': selectedMessage
+                      };
+                      log(reservationInfo.toString());
+
+                      try {
+                        switch (await ownerProvider.addReservation(reservationInfo)) {
+                          case RequestError.done:
+                            ShowMessageWidget(
+                                message: AppTexts.usrListTile.successMessage);
+                            break;
+                          case RequestError.error:
+                            ShowMessageWidget(
+                              message: AppTexts.usrListTile.errorMessage,
+                            );
+                            break;
+                        }
+                      } catch (e) {
+                        ShowMessageWidget(
+                          message: AppTexts.usrListTile.errorMessage,
+                        );
+                        // log('Error $e');
+                      }
+                    },
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        20.0 * scaleFactor), // Scala il bordo
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.0 * scaleFactor, // Scala il padding
+                    vertical: 8.0 * scaleFactor, // Scala il padding
+                  ),
                 ),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16.0 * scaleFactor, // Scala il padding
-                  vertical: 8.0 * scaleFactor, // Scala il padding
+                child: Text(
+                  AppTexts.usrListTile.btnText,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.0 * scaleFactor, // Scala il font size
+                  ),
                 ),
               ),
-              child: Text(
-                AppTexts.usrListTile.btnText,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0 * scaleFactor, // Scala il font size
-                ),
-              ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16.0 * scaleFactor, // Scala il padding
+              vertical: 8.0 * scaleFactor, // Scala il padding
             ),
           ),
         ],

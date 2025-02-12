@@ -25,6 +25,7 @@ class LandingScreen extends StatelessWidget {
         ? LandingOwner(
             userProvider: userProvider,
             ownerProvider: ownerProvider,
+            works: works,
           )
         : LandingWorker(
             userProvider: userProvider,

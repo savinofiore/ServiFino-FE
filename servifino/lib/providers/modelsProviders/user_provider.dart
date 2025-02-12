@@ -4,16 +4,17 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:servifino/interfaces/BaseProvider.dart';
 import 'package:servifino/models/ReservationModel.dart';
+import 'package:servifino/utils/app_endpoints.dart';
 import 'package:servifino/utils/request_errors.dart';
 import '../../models/UserModel.dart';
 
 class UserProvider extends BaseProvider<UserModel> {
   UserModel? _user;
 
-  late List<ReservationModel> _reservationWaitingList = [];
-  List<ReservationModel> _reservationExpiredList = [];
+  late List<ReservationModel> _reservationsList = [];
+  //List<ReservationModel> _reservationExpiredList = [];
 
-  get reservationWaitingList => _reservationWaitingList;
+  get reservationsList => _reservationsList;
 
   @override
   UserModel? get data => _user;
@@ -38,7 +39,9 @@ class UserProvider extends BaseProvider<UserModel> {
   Future<RequestError> updateData(Map<String, dynamic> updates) async {
     try {
       HttpsCallable callable = FirebaseFunctions.instance
-          .httpsCallableFromUrl('https://updateuser-sap7hrqoga-uc.a.run.app');
+          .httpsCallableFromUrl(
+          AppEndpoints.user.updateUser
+      );
 
       await callable.call(updates);
       _user = _user!.updateLocally(updates);
@@ -53,7 +56,7 @@ class UserProvider extends BaseProvider<UserModel> {
   Future<RequestError> registerUser(Map<String, dynamic> userData) async {
     try {
       HttpsCallable callable = FirebaseFunctions.instance
-          .httpsCallableFromUrl('https://createuser-sap7hrqoga-uc.a.run.app');
+          .httpsCallableFromUrl( AppEndpoints.user.createUser);
       await callable.call(userData);
       return RequestError.done;
     } catch (e) {
@@ -104,22 +107,28 @@ class UserProvider extends BaseProvider<UserModel> {
       }
       // Ottieni il riferimento alla funzione Firebase
       HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl(
-        'http://127.0.0.1:5001/servifino/us-central1/getReservationsWaitingByUserId',
+        AppEndpoints.worker.getReservationsWaitingByUserId,
       );
 
       final response = await callable.call({
-          'userId': _user!.uid,
+        'userId': _user!.uid,
       });
       response.data.map((reservation) {
-          log('Single: $reservation');
-          _reservationWaitingList.add(ReservationModel.fromJson(reservation));
-        }).toList();
-
+        _reservationsList.add(ReservationModel.fromJson(reservation));
+      }).toList();
     } catch (e) {
       log('Errore durante il recupero delle prenotazioni: $e');
       throw Exception('Errore durante il recupero delle prenotazioni: $e');
+    } finally {
+      //rimuove eventuali duplicati
+      _removeDuplicates();
+      notifyListeners();
     }
   }
 
-
+  //funzione per rimuovere duplicati
+  void _removeDuplicates() {
+    final seenIds = <String>{}; // Set per memorizzare gli ID già visti
+    _reservationsList.retainWhere((reservation) => seenIds.add(reservation.id));
+  }
 }

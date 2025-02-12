@@ -1,32 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:servifino/interfaces/ModelInterface.dart';
 import 'package:servifino/models/OwnerModel.dart';
+import 'package:servifino/models/UserModel.dart';
 import 'package:servifino/utils/reservation_status.dart';
 
 
 class ReservationModel implements ModelInterface {
   final String id;
-  final String workerId;
+  final UserModel? user;
   final OwnerModel? owner;
   final DateTime? reservationDate;
   final String reservationStatus;
   final int? rating;
-  final String? additionalInformations;
+  final String? message;
 
   ReservationModel({
     required this.id,
-    required this.workerId,
+    required this.user,
     required this.owner,
     required this.reservationDate,
     required this.reservationStatus,
     this.rating,
-    this.additionalInformations,
+    this.message,
   });
 
   factory ReservationModel.fromJson(Map<String, dynamic> json) {
     return ReservationModel(
       id: json['id'] as String,
-      workerId: json['workerId'] as String,
+      //workerId: json['workerId'] as String,
+      user: json['user'] != null
+          ? UserModel.fromJson(json['user'] as Map<String, dynamic>)
+          : null,
       owner: json['owner'] != null
           ? OwnerModel.fromJson(json['owner'] as Map<String, dynamic>)
           : null,
@@ -37,7 +41,7 @@ class ReservationModel implements ModelInterface {
       rating: json['rating'] != null
           ? int.tryParse(json['rating'].toString()) ?? 0
           : null,
-      additionalInformations: json['additionalInformations'] as String?,
+      message: json['message'] as String?,
     );
   }
 
@@ -61,12 +65,12 @@ class ReservationModel implements ModelInterface {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'workerId': workerId,
+      'user': user?.toMap(),
       'owner': owner?.toMap(),
       'reservationDate': reservationDate?.toIso8601String(), // Stringa compatibile
       'reservationStatus': reservationStatus.toString(),
       'rating': rating,
-      'additionalInformations': additionalInformations,
+      'message': message,
     };
   }
 

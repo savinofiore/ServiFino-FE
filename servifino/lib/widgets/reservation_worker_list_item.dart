@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:servifino/models/ReservationModel.dart';
 import 'package:servifino/utils/app_texts.dart';
 
-class ReservationListItem extends StatelessWidget {
+class ReservationWorkerListItem extends StatelessWidget {
   final ReservationModel reservation;
 
-  ReservationListItem({super.key, required this.reservation});
+  ReservationWorkerListItem({super.key, required this.reservation});
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +36,33 @@ class ReservationListItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Positioned(
+              top: 8.0 * scaleFactor, // Scala la posizione
+              right: 8.0 * scaleFactor, // Scala la posizione
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 8.0 * scaleFactor, // Scala il padding
+                  vertical: 4.0 * scaleFactor, // Scala il padding
+                ),
+                decoration: BoxDecoration(
+                  color: reservation.reservationStatus == 'waiting'
+                      ? Colors.yellow.withOpacity(0.2)
+                      : Colors.green.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(
+                      12.0 * scaleFactor), // Scala il bordo
+                ),
+                child: Text(
+                  reservation.reservationStatus == 'waiting'
+                      ? AppTexts.usrListTile.available
+                      : AppTexts.usrListTile.unavailable,
+                  style: TextStyle(
+                    fontSize: 12.0 * scaleFactor, // Scala il font size
+                    color: reservation.reservationStatus == 'waiting' ? Colors.green : Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
             // Contenuto principale della card
             Row(
               children: [
@@ -69,7 +96,6 @@ class ReservationListItem extends StatelessWidget {
             ),
             SizedBox(
                 height: 8.0 * scaleFactor), // Spazio tra contenuto e pulsanti
-
             // Riga con i pulsanti "Accetta", "Rifiuta", "Info"
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
