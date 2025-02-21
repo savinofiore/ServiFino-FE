@@ -20,7 +20,7 @@ class HomeWorker extends StatelessWidget {
   Widget build(BuildContext context) {
     return reservations.isEmpty
         ? const Center(
-            child: CircularProgressIndicator(),
+            child: Text('Nessuna prenotazione in sospeso'),
           )
         : ListView.builder(
             itemCount: reservations.length,

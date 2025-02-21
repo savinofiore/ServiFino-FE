@@ -11,6 +11,7 @@ class UserEndpoints {
 
 class WorkerEndpoints {
   final String getReservationsWaitingByUserId = "https://getreservationswaitingbyuserid-sap7hrqoga-uc.a.run.app";
+  final String updateReservationStatus = 'https://us-central1-servifino.cloudfunctions.net/updateReservationStatus';
 }
 
 class OwnerEndpoints {

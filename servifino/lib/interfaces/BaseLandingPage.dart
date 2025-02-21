@@ -6,7 +6,8 @@ abstract class BaseLandingPage extends StatelessWidget {
   final String title;
   final ValueNotifier<int> _selectedIndex = ValueNotifier<int>(1);
 
-  BaseLandingPage({super.key, required this.pages, required this.title});
+
+  BaseLandingPage({super.key, required this.pages, required this.title, });
 
   @override
   Widget build(BuildContext context) {

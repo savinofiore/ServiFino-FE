@@ -15,8 +15,8 @@ class LandingWorker extends BaseLandingPage {
   }) : super(
     title: _getTitle(userProvider, works),
     pages: [
-      HistoryWorker(user: userProvider.data, works: works),
-      HomeWorker(user: userProvider.data, works: works, reservations: userProvider.reservationsList ,),
+      HistoryWorker(user: userProvider.data, works: works, reservations: userProvider.reservationsModifiedList,),
+      HomeWorker(user: userProvider.data, works: works, reservations: userProvider.reservationsWaitingList ,),
       ProfileWorker(user: userProvider.data, works: works),
     ],
   );

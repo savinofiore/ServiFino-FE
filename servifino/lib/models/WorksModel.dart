@@ -32,9 +32,10 @@ class WorkModel implements ModelInterface {
   @override
   WorkModel updateLocally(Map<String, dynamic> updates) {
     return WorkModel(
-      id: id, // L'ID non cambia mai
+      id: id,
       description: updates['description'] ?? description,
       name: updates['name'] ?? name,
     );
   }
+
 }

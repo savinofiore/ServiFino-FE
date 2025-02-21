@@ -4,11 +4,11 @@ import 'package:servifino/models/WorksModel.dart';
 import 'package:servifino/utils/app_texts.dart';
 import 'package:servifino/utils/formatDateTime.dart';
 
-class ReservationOwnerListItem extends StatelessWidget {
+class ReservationModifiedWorkerListItem extends StatelessWidget {
   final ReservationModel reservation;
   final List<WorkModel>? works;
 
-  ReservationOwnerListItem({
+  ReservationModifiedWorkerListItem({
     super.key,
     required this.reservation,
     required this.works,
@@ -16,7 +16,6 @@ class ReservationOwnerListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // Ottieni le dimensioni dello schermo
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -41,7 +40,6 @@ class ReservationOwnerListItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Contenuto principale della card
             Row(
               children: [
                 Icon(Icons.calendar_month,
@@ -53,7 +51,7 @@ class ReservationOwnerListItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${reservation.user!.displayName} - ${works?.firstWhere((work) => work.id.toString() == reservation.user!.work, orElse: () => WorkModel(id: '', name: '', description: '')).name}',
+                        '${reservation.owner!.activityName} - ${works?.firstWhere((work) => work.id.toString() == reservation.user!.work, orElse: () => WorkModel(id: '', name: '', description: '')).name}',
                         style: TextStyle(
                           fontSize: 18.0 * scaleFactor, // Scala il font size
                           fontWeight: FontWeight.bold,
@@ -62,28 +60,59 @@ class ReservationOwnerListItem extends StatelessWidget {
                       //SizedBox(height: 4.0 * scaleFactor), // Scala lo spazio
                       Text(
                         //reservation.reservationDate!.toIso8601String(),
-                        formatDateTime(reservation.reservationDate),
+                        '${reservation.owner!.activityLocation}, ${formatDateTime(reservation.reservationDate)}',
                         style: TextStyle(
                           fontSize: 14.0 * scaleFactor, // Scala il font size
                           color: Colors.grey[600],
                         ),
                       ),
-
+                      Text(
+                        //reservation.reservationDate!.toIso8601String(),
+                        'Informazioni aggiuntive',
+                        style: TextStyle(
+                          fontSize: 14.0 * scaleFactor, // Scala il font size
+                          color: Colors.grey[600],
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       Text(
                         reservation.message.toString(),
+                        style: TextStyle(
+                          fontSize: 14.0 * scaleFactor, // Scala il font size
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      Text(
+                        //reservation.reservationDate!.toIso8601String(),
+                        'Contatti',
+                        style: TextStyle(
+                          fontSize: 12.0 * scaleFactor, // Scala il font size
+                          color: Colors.grey[600],
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        //reservation.reservationDate!.toIso8601String(),
+                        '${reservation.owner!.activityNumber}',
                         style: TextStyle(
                           fontSize: 12.0 * scaleFactor, // Scala il font size
                           color: Colors.grey[600],
                         ),
-                      )
+                      ),
+                      Text(
+                        //reservation.reservationDate!.toIso8601String(),
+                        '${reservation.owner!.activityWebsite}',
+                        style: TextStyle(
+                          fontSize: 12.0 * scaleFactor, // Scala il font size
+                          color: Colors.grey[600],
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
-            SizedBox(
-                height: 8.0 * scaleFactor), // Spazio tra contenuto e pulsanti
-            // Riga con i pulsanti "Accetta", "Rifiuta", "Info"
+            SizedBox(height: 8.0 * scaleFactor),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -118,8 +147,6 @@ class ReservationOwnerListItem extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                //Text(reservation.reservationStatus)
               ],
             ),
           ],

@@ -141,7 +141,6 @@ class UserListItem extends StatelessWidget {
                         'owner': ownerProvider.data!.toMap(),
                         'reservationDate': selectedDateTime?.toIso8601String(),
                         'reservationStatus': 'waiting',
-                        //'rating': 0
                         'message': selectedMessage
                       };
                       log(reservationInfo.toString());

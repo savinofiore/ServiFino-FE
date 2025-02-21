@@ -1,6 +1,14 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:servifino/models/ReservationModel.dart';
+import 'package:servifino/providers/modelsProviders/user_provider.dart';
+import 'package:servifino/utils/app_endpoints.dart';
 import 'package:servifino/utils/app_texts.dart';
+import 'package:servifino/utils/formatDateTime.dart';
+import 'package:servifino/utils/request_errors.dart';
+import 'package:servifino/widgets/show_confirmation_dialog.dart';
+import 'package:servifino/widgets/show_message.dart';
 
 class ReservationWorkerListItem extends StatelessWidget {
   final ReservationModel reservation;
@@ -9,6 +17,31 @@ class ReservationWorkerListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _updateStatus(String newStatus) async {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final Map<String, dynamic> reservationInfo = {
+        'reservationId': reservation.id,
+        'reservationStatus': newStatus
+      };
+      try {
+        switch (await userProvider.editReservationStatus(reservationInfo)) {
+          case RequestError.done:
+            ShowMessageWidget(message: AppTexts.usrListTile.successMessage);
+            break;
+          case RequestError.error:
+            ShowMessageWidget(
+              message: AppTexts.usrListTile.errorMessage,
+            );
+            break;
+        }
+      } catch (e) {
+        ShowMessageWidget(
+          message: AppTexts.usrListTile.errorMessage,
+        );
+        // log('Error $e');
+      }
+    }
+
     //bool _isLoading = false;
     DateTime? selectedDateTime;
 
@@ -36,33 +69,6 @@ class ReservationWorkerListItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Positioned(
-              top: 8.0 * scaleFactor, // Scala la posizione
-              right: 8.0 * scaleFactor, // Scala la posizione
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 8.0 * scaleFactor, // Scala il padding
-                  vertical: 4.0 * scaleFactor, // Scala il padding
-                ),
-                decoration: BoxDecoration(
-                  color: reservation.reservationStatus == 'waiting'
-                      ? Colors.yellow.withOpacity(0.2)
-                      : Colors.green.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(
-                      12.0 * scaleFactor), // Scala il bordo
-                ),
-                child: Text(
-                  reservation.reservationStatus == 'waiting'
-                      ? AppTexts.usrListTile.available
-                      : AppTexts.usrListTile.unavailable,
-                  style: TextStyle(
-                    fontSize: 12.0 * scaleFactor, // Scala il font size
-                    color: reservation.reservationStatus == 'waiting' ? Colors.green : Colors.red,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
             // Contenuto principale della card
             Row(
               children: [
@@ -83,7 +89,9 @@ class ReservationWorkerListItem extends StatelessWidget {
                       ),
                       SizedBox(height: 4.0 * scaleFactor), // Scala lo spazio
                       Text(
-                        reservation.owner!.activityLocation,
+                        reservation.owner!.activityLocation +
+                            ', ' +
+                            formatDateTime(reservation.reservationDate),
                         style: TextStyle(
                           fontSize: 14.0 * scaleFactor, // Scala il font size
                           color: Colors.grey[600],
@@ -97,83 +105,84 @@ class ReservationWorkerListItem extends StatelessWidget {
             SizedBox(
                 height: 8.0 * scaleFactor), // Spazio tra contenuto e pulsanti
             // Riga con i pulsanti "Accetta", "Rifiuta", "Info"
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // Pulsante "Accetta"
-                ElevatedButton(
-                  onPressed: () {
-                    // Azione per il pulsante "Accetta"
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          20.0 * scaleFactor), // Scala il bordo
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.0 * scaleFactor, // Scala il padding
-                      vertical: 8.0 * scaleFactor, // Scala il padding
-                    ),
+
+            reservation.reservationStatus == 'waiting'
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // Pulsante "Accetta"
+                      ElevatedButton(
+                        onPressed: () {
+                          showConfirmationDialog(
+                            context,
+                            title: AppTexts.usrListTile.showDialogTitle,
+                            message: AppTexts.usrListTile.showDialogMessage,
+                            onConfirm: () {
+                              _updateStatus('accepted');
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                20.0 * scaleFactor), // Scala il bordo
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.0 * scaleFactor, // Scala il padding
+                            vertical: 8.0 * scaleFactor, // Scala il padding
+                          ),
+                        ),
+                        child: Text(
+                          AppTexts.resListItem.done,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.0 * scaleFactor, // Scala il font size
+                          ),
+                        ),
+                      ),
+                      // Pulsante "Rifiuta"
+                      ElevatedButton(
+                        onPressed: () {
+                          showConfirmationDialog(
+                            context,
+                            title: AppTexts.usrListTile.showDialogTitle,
+                            message: AppTexts.usrListTile.showDialogMessage,
+                            onConfirm: () {
+                              _updateStatus('rejected');
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                20.0 * scaleFactor), // Scala il bordo
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.0 * scaleFactor, // Scala il padding
+                            vertical: 8.0 * scaleFactor, // Scala il padding
+                          ),
+                        ),
+                        child: Text(
+                          AppTexts.resListItem.reject,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.0 * scaleFactor, // Scala il font size
+                          ),
+                        ),
+                      ),
+                      // Pulsante "Info"
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(reservation.reservationStatus == 'accepted'
+                          ? AppTexts.historyOwner.acceptedStatus
+                          : AppTexts.historyOwner.rejectedStatus)
+                    ],
                   ),
-                  child: Text(
-                    AppTexts.resListItem.done,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.0 * scaleFactor, // Scala il font size
-                    ),
-                  ),
-                ),
-                // Pulsante "Rifiuta"
-                ElevatedButton(
-                  onPressed: () {
-                    // Azione per il pulsante "Rifiuta"
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          20.0 * scaleFactor), // Scala il bordo
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.0 * scaleFactor, // Scala il padding
-                      vertical: 8.0 * scaleFactor, // Scala il padding
-                    ),
-                  ),
-                  child: Text(
-                    AppTexts.resListItem.reject,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.0 * scaleFactor, // Scala il font size
-                    ),
-                  ),
-                ),
-                // Pulsante "Info"
-                ElevatedButton(
-                  onPressed: () {
-                    // Azione per il pulsante "Info"
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          20.0 * scaleFactor), // Scala il bordo
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.0 * scaleFactor, // Scala il padding
-                      vertical: 8.0 * scaleFactor, // Scala il padding
-                    ),
-                  ),
-                  child: Text(
-                    AppTexts.resListItem.info,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.0 * scaleFactor, // Scala il font size
-                    ),
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),

@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.auth.register: (context) => RegisterScreen(),
           AppRoutes.worker.home: (context) => HomeWorker(user: null, works: null, reservations: [],),
           AppRoutes.worker.profile: (context) => ProfileWorker(user: null, works: null),
-          AppRoutes.worker.history: (context) => HistoryWorker(user: null, works: null),
+          AppRoutes.worker.history: (context) => HistoryWorker(user: null, works: null, reservations: [],),
         },
       ),
     );

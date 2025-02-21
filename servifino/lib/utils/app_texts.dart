@@ -24,7 +24,6 @@ class AppTexts {
   static ReservationListItemTexts resListItem = ReservationListItemTexts();
   //History Owner
   static HistoryOwnerTexts historyOwner = HistoryOwnerTexts();
-
 }
 
 class LoginScreenTexts {
