@@ -53,7 +53,7 @@ Questo approccio semplifica la gestione dei ruoli, assicurando che ciascun utent
 
 ## Struttura del Progetto
 
-Ecco la struttura della cartella `lib/`, personalizzata in base al tuo progetto:
+Ecco la struttura della cartella `lib/`, personalizzata in base al progetto:
 
 ```bash
 lib/
