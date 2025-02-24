@@ -6,11 +6,7 @@ L'app per prenotare personale nel settore terziario.
 - [Struttura dell’Applicazione](#struttura-dellapplicazione)
 - [Gestione degli Utenti](#gestione-degli-utenti)
 - [Funzionalità Principali](#funzionalità-principali)
-- [Installazione e Avvio](#installazione-e-avvio)
 - [Struttura del Progetto](#struttura-del-progetto)
-- [Contributi](#contributi)
-- [Licenza](#licenza)
-
 ---
 
 ## Struttura dell’Applicazione
