@@ -97,8 +97,8 @@ class ControllersText {
   final String passwordError = 'La password deve avere almeno 6 caratteri';
   final String confPassword = 'Conferma Password';
   final String confPasswordHint = 'Conferma la tua password';
-  final String confPasswordError =
-      'Le password devono essere valide e coincidere';
+  final String confPasswordError = 'Le password devono essere valide e coincidere';
+  final String lenghtPasswordError = 'La password deve essere di almeno 6 caratteri';
   final String displayName = 'Nome utente';
   final String displayNameHint = 'Inserisci il tuo nome';
   final String displayNameError = 'Inserisci un nome utente';

@@ -95,22 +95,6 @@ class RegisterScreen extends StatelessWidget {
                           return null;
                         },
                       ),
-                      /*TextFormField(
-                        controller: registerProvider.phoneNumberController,
-                        keyboardType: TextInputType.number,
-                        enabled: false,
-                        decoration: InputDecoration(
-                          labelText: AppTexts.controllers.number,
-                          hintText: AppTexts.controllers.numberHint,
-                          prefixIcon: const Icon(Icons.phone),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return AppTexts.controllers.numberError;
-                          }
-                          return null;
-                        },
-                      ),*/
                       const SizedBox(height: 16),
                       Text(AppTexts.register.textInfo3),
                       SwitchListTile(
@@ -121,11 +105,21 @@ class RegisterScreen extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 16),
+                      Center(
+                        child: Text(
+                          registerProvider.errorMessage,
+                          style: const TextStyle(
+                            color: Colors.red
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
                       if (registerProvider.isLoading)
                         const Center(child: CircularProgressIndicator())
                       else
                         ElevatedButton(
                           onPressed: () async {
+                            registerProvider.updateError(false, '');
                             switch (registerProvider.validateFields()) {
                               case RegistrationError.success:
                                 break;
