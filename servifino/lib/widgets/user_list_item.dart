@@ -52,7 +52,8 @@ class UserListItem extends StatelessWidget {
                   children: [
                     Icon(Icons.person,
                         size: 40.0 * scaleFactor,
-                        color: Colors.blue), // Scala l'icona
+                        //color: Colors.blue,
+                    ), // Scala l'icona
                     SizedBox(width: 16.0 * scaleFactor), // Scala lo spazio
                     Expanded(
                       child: Column(
@@ -73,7 +74,7 @@ class UserListItem extends StatelessWidget {
                             style: TextStyle(
                               fontSize:
                                   14.0 * scaleFactor, // Scala il font size
-                              color: Colors.grey[600],
+                              //color: Colors.grey[600],
                             ),
                           ),
                           SizedBox(
@@ -167,7 +168,7 @@ class UserListItem extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  //backgroundColor: Colors.blue,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
                         20.0 * scaleFactor), // Scala il bordo
@@ -180,7 +181,7 @@ class UserListItem extends StatelessWidget {
                 child: Text(
                   AppTexts.usrListTile.btnText,
                   style: TextStyle(
-                    color: Colors.white,
+                    //color: Colors.white,
                     fontSize: 14.0 * scaleFactor, // Scala il font size
                   ),
                 ),

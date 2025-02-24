@@ -40,7 +40,7 @@ abstract class ProfileBase extends StatelessWidget {
                 vertical: screenHeight * 0.02, horizontal: screenWidth * 0.05),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.blue, Colors.blueAccent],
+                colors: [Color(0xFFD4B773), Color(0xFFD4B773)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -77,7 +77,9 @@ abstract class ProfileBase extends StatelessWidget {
               children: [
                 additionalWidget ?? Container(),
                 ListTile(
-                  leading: const Icon(Icons.edit, color: Colors.blueAccent),
+                  leading: const Icon(Icons.edit,
+                    //color: Colors.blueAccent,
+                    ),
                   title: Text(AppTexts.controllers.editProfileBtn),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {

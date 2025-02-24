@@ -28,13 +28,14 @@ class AppTexts {
 
 class LoginScreenTexts {
   final String loginButton = 'Accedi';
-  final String loginAppBarTitle = 'Accedi';
+  final String loginAppBarTitle = 'ServiFino Accedi';
   final String forgotPassword = 'Password dimenticata?';
   final String createAccount = 'Non hai ancora un account? Registrati';
+  final String errorMessage = 'Credenziali errate';
 }
 
 class RegisterScreenTexts {
-  final String registerAppBarTitle = 'Registrati';
+  final String registerAppBarTitle = 'ServiFino Registrati';
   final String registerButton = 'Registrati';
   final String alreadyHaveAccount = 'Hai già un account? Accedi';
   final String passErrMessage = 'Le password non corrispondono';
@@ -99,6 +100,7 @@ class ControllersText {
   final String confPasswordHint = 'Conferma la tua password';
   final String confPasswordError = 'Le password devono essere valide e coincidere';
   final String lenghtPasswordError = 'La password deve essere di almeno 6 caratteri';
+  final String emptyValueError = 'Tutti i campi sono obbligatori';
   final String displayName = 'Nome utente';
   final String displayNameHint = 'Inserisci il tuo nome';
   final String displayNameError = 'Inserisci un nome utente';

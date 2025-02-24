@@ -46,7 +46,8 @@ class ReservationOwnerListItem extends StatelessWidget {
               children: [
                 Icon(Icons.calendar_month,
                     size: 40.0 * scaleFactor,
-                    color: Colors.blue), // Scala l'icona
+                    //color: Colors.blue
+                ), // Scala l'icona
                 SizedBox(width: 16.0 * scaleFactor), // Scala lo spazio
                 Expanded(
                   child: Column(

@@ -30,6 +30,10 @@ class RegisterProvider extends BaseUIProvider {
   }
 
   RegistrationError validateFields() {
+    if(_emailController.text.isEmpty || _displayNameController.text.isEmpty){
+      updateError(true, AppTexts.controllers.emptyValueError);
+      return RegistrationError.error;
+    }
     if (_passwordController.text != _confirmPasswordController.text) {
       updateError(true, AppTexts.controllers.confPasswordError);
       return RegistrationError.dismatchPassword;
