@@ -14,6 +14,7 @@ import 'package:servifino/screens/authentication/register.dart';
 import 'package:servifino/screens/landing/landing.dart';
 import 'package:servifino/utils/app_routes.dart';
 import 'package:servifino/utils/app_texts.dart';
+import 'package:servifino/utils/app_themeData.dart';
 import 'auth_router_wrapper.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
@@ -38,28 +39,36 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => RegisterProvider()),
-        ChangeNotifierProvider(
-            create: (_) => ProfileEditProvider(user: null, works: null)),
+        ChangeNotifierProvider(create: (_) => ProfileEditProvider(user: null, works: null)),
         ChangeNotifierProvider(create: (_) => WorksProvider()),
         ChangeNotifierProvider(create: (_) => OwnerProvider()),
-        ChangeNotifierProvider(
-            create: (_) => EditOwnerProfileProvider(owner: null)),
+        ChangeNotifierProvider(create: (_) => EditOwnerProfileProvider(owner: null)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: AppTexts.title,
-        /*theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),*/
-
         theme: ThemeData(
-          primaryColor: const Color(0xFFD4B773), // Colore principale
-          scaffoldBackgroundColor: Colors.white, // Sfondo dell'app
+          primaryColor: MyTheme.primaryColor,
+          scaffoldBackgroundColor: MyTheme.scaffoldBackgroundColor,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: MyTheme.appBarBackgroundColor,
+            titleTextStyle: TextStyle(
+              color: MyTheme.appBarTitleColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           colorScheme: const ColorScheme.light(
-            primary: Color(0xFFD4B773),
-            secondary: Color(0xFF343434),
+            primary: MyTheme.primaryColor,
+            secondary: MyTheme.textColor,
+          ),
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            backgroundColor: MyTheme.bottomNavigationBarTheme.backgroundColor,
+            selectedItemColor: MyTheme.bottomNavigationBarTheme.selectedItemColor,
+            //unselectedItemColor: MyTheme.textColor,
           ),
         ),
+
         // Rotta iniziale
         initialRoute: AppRoutes.authWrapper,
         // Dichiarazione rotte
