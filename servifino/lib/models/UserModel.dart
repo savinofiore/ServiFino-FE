@@ -62,15 +62,15 @@ class UserModel implements ModelInterface {
   }
 
   // Metodo per convertire JSON in UserModel
-  factory UserModel.fromJson(Map<String, dynamic> json) {
+  factory UserModel.fromJson(Map<Object?, Object?> json) {
     return UserModel(
-      uid: json['uid'] ?? '',
-      email: json['email'] ?? '',
-      displayName: json['displayName'] ?? '',
-      isAvailable: json['isAvailable'] ?? false,
-      isOwner: json['isOwner'] ?? false,
-      disabled: json['disabled'] ?? false,
-      work: json['work'] ?? null
+      uid: (json['uid'] ?? '').toString(),
+      email: (json['email'] ?? '').toString(),
+      displayName: (json['displayName'] ?? '').toString(),
+      isAvailable: (json['isAvailable'] ?? false) as bool,
+      isOwner: (json['isOwner'] ?? false) as bool,
+      disabled:( json['disabled'] ?? false) as bool,
+      work: (json['work'] ?? null).toString()
     );
   }
 }

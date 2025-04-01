@@ -31,7 +31,7 @@ class OwnerModel implements ModelInterface {
   }
 
 
-  factory OwnerModel.fromJson(Map<String, dynamic> json){
+  factory OwnerModel.fromJson(Map<Object?, Object?> json){
     return OwnerModel(
       userUid: json['userUid'] as String,
       activityName: json['activityName'] as String,

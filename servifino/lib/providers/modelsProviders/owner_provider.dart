@@ -38,9 +38,8 @@ class OwnerProvider extends BaseProvider<OwnerModel> {
   @override
   Future<RequestError> updateData(Map<String, dynamic> updates) async {
     try {
-      HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl(
-        AppEndpoints.owner.addOrUpdateOwner
-      );
+      HttpsCallable callable = FirebaseFunctions.instance
+          .httpsCallableFromUrl(AppEndpoints.owner.addOrUpdateOwner);
       await callable.call(updates);
       _owner = _owner!.updateLocally(updates);
       notifyListeners();
@@ -55,9 +54,8 @@ class OwnerProvider extends BaseProvider<OwnerModel> {
     if (_usersToBook.isNotEmpty) return;
     try {
       // Ottieni il riferimento alla funzione Firebase
-      HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl(
-        AppEndpoints.owner.getNonOwnerUsers
-      );
+      HttpsCallable callable = FirebaseFunctions.instance
+          .httpsCallableFromUrl(AppEndpoints.owner.getNonOwnerUsers);
       // Chiama la funzione Firebase
       final response = await callable.call();
       if (response.data != null && response.data['users'] != null) {
@@ -98,13 +96,17 @@ class OwnerProvider extends BaseProvider<OwnerModel> {
         throw Exception('UserId non valido');
       }
       // Ottieni il riferimento alla funzione Firebase
-      HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl(
-        AppEndpoints.owner.getReservationsSent
-      );
+      HttpsCallable callable = FirebaseFunctions.instance
+          .httpsCallableFromUrl(AppEndpoints.owner.getReservationsSent);
 
       final response = await callable.call({
         'userId': _owner!.userUid,
       });
+
+      // Verifica se la risposta contiene dati
+      if (response.data == null || response.data.isEmpty) {
+        throw Exception('Nessuna prenotazione trovata');
+      }
       response.data.map((reservation) {
         _reservationsList.add(ReservationModel.fromJson(reservation));
       }).toList();

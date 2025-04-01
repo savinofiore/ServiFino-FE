@@ -24,20 +24,20 @@ class ReservationModel implements ModelInterface {
     this.message,
   });
 
-  factory ReservationModel.fromJson(Map<String, dynamic> json) {
+  factory ReservationModel.fromJson(Map<Object?, Object?> json) {
     return ReservationModel(
       id: json['id'] as String,
       //workerId: json['workerId'] as String,
       user: json['user'] != null
-          ? UserModel.fromJson(json['user'] as Map<String, dynamic>)
+          ? UserModel.fromJson(json['user'] as Map<Object?, Object?>)
           : null,
       owner: json['owner'] != null
-          ? OwnerModel.fromJson(json['owner'] as Map<String, dynamic>)
+          ? OwnerModel.fromJson(json['owner'] as Map<Object?, Object?>)
           : null,
       reservationDate: json['bookDate'] != null
           ? DateTime.parse(json['bookDate'] as String)
           : null,
-      reservationStatus: json['bookStatus'],
+      reservationStatus: json['bookStatus'].toString(),
       rating: json['rating'] != null
           ? int.tryParse(json['rating'].toString()) ?? 0
           : null,

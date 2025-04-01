@@ -99,7 +99,7 @@ class UserProvider extends BaseProvider<UserModel> {
   }
 
   Future<void> fetchReservations() async {
-    if(_reservationsList.isNotEmpty){
+    if (_reservationsList.isNotEmpty) {
       _reservationsList = [];
       _reservationsModifiedList = [];
       _reservationsWaitingList = [];
@@ -110,18 +110,21 @@ class UserProvider extends BaseProvider<UserModel> {
         throw Exception('UserId non valido');
       }
       // Ottieni il riferimento alla funzione Firebase
-
-
       HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl(
         AppEndpoints.worker.getReservationsWaitingByUserId,
       );
       final response = await callable.call({
         'userId': _user!.uid,
       });
+      // Verifica se la risposta contiene dati
+      if (response.data == null || response.data.isEmpty) {
+        throw Exception('Nessuna prenotazione trovata');
+      }
+
+
       response.data.map((reservation) {
         _reservationsList.add(ReservationModel.fromJson(reservation));
       }).toList();
-
 
     } catch (e) {
       log('Errore durante il recupero delle prenotazioni: $e');
@@ -134,18 +137,17 @@ class UserProvider extends BaseProvider<UserModel> {
     }
   }
 
-
-  Future<RequestError> editReservationStatus( Map<String, dynamic> reservationInfo) async{
-
-    try{
+  Future<RequestError> editReservationStatus(
+      Map<String, dynamic> reservationInfo) async {
+    try {
       HttpsCallable callable = FirebaseFunctions.instance.httpsCallableFromUrl(
         AppEndpoints.worker.updateReservationStatus,
       );
       await callable.call(reservationInfo);
       return RequestError.done;
-    } catch(e){
+    } catch (e) {
       return RequestError.error;
-    }finally{
+    } finally {
       fetchReservations();
     }
   }
@@ -164,7 +166,9 @@ class UserProvider extends BaseProvider<UserModel> {
   void _removeDuplicates() {
     final seenIds = <String>{}; // Set per memorizzare gli ID già visti
     _reservationsList.retainWhere((reservation) => seenIds.add(reservation.id));
-    _reservationsWaitingList.retainWhere((reservation) => seenIds.add(reservation.id));
-    _reservationsModifiedList.retainWhere((reservation) => seenIds.add(reservation.id));
+    _reservationsWaitingList
+        .retainWhere((reservation) => seenIds.add(reservation.id));
+    _reservationsModifiedList
+        .retainWhere((reservation) => seenIds.add(reservation.id));
   }
 }
