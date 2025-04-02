@@ -1,0 +1,2 @@
+/Users/savinofiore/IdeaProjects/ServiFino-FE/servifino/android/app/.cxx/Debug/5g251d71/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/Users/savinofiore/IdeaProjects/ServiFino-FE/servifino/android/app/.cxx/Debug/5g251d71/armeabi-v7a/CMakeFiles/edit_cache.dir
