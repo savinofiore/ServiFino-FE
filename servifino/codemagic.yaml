@@ -1,0 +1,19 @@
+version: 1.0
+workflow:
+  name: default
+  max_build_duration: 60
+  triggers:
+    - push:
+        branches:
+          - main
+  environments:
+    flutter: stable
+    android: true
+  scripts:
+    - name: Install dependencies
+      script: |
+        cd servifino
+        flutter pub get
+    - name: Build APK
+      script: |
+        flutter build apk --release
