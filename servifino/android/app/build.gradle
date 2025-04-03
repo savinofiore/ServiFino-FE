@@ -27,7 +27,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "dev.savinofiore.servifino.servifino"
-    compileSdkVersion 34
+    compileSdkVersion 35
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -54,6 +54,20 @@ android {
         versionName flutterVersionName
     }
 
+    signingConfigs {
+        release {
+            if (project.hasProperty("keyProperties")) {
+                def keystoreProperties = new Properties()
+                def keystoreFile = rootProject.file("key.properties")
+                keystoreProperties.load(new FileInputStream(keystoreFile))
+                storeFile file(keystoreProperties["storeFile"])
+                storePassword keystoreProperties["storePassword"]
+                keyAlias keystoreProperties["keyAlias"]
+                keyPassword keystoreProperties["keyPassword"]
+            }
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
@@ -68,3 +82,6 @@ flutter {
 }
 
 dependencies {}
+
+apply plugin: 'com.google.gms.google-services'
+
