@@ -1,0 +1,1 @@
+ /Users/savinofiore/IdeaProjects/servifino/.dart_tool/flutter_build/d8539626185f1648044e2a99c32af0fc/native_assets.json: 

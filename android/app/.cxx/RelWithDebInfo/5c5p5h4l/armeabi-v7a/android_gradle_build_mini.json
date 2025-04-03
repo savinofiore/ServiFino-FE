@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/savinofiore/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/savinofiore/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/savinofiore/IdeaProjects/ServiFino-FE/servifino/android/app/.cxx/RelWithDebInfo/5c5p5h4l/armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/savinofiore/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/savinofiore/IdeaProjects/ServiFino-FE/servifino/android/app/.cxx/RelWithDebInfo/5c5p5h4l/armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ServiFino</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    var serviceWorkerVersion = null;
+  </script>
+
+  <script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+
+
+    apiKey: 'AIzaSyBgVIl_yfmXl8o-XCrkbyYAwTUBAnAZZ_c',
+    appId: '1:573229922917:web:592b80a370a0ce6e42248c',
+    messagingSenderId: '573229922917',
+    projectId: 'servifino',
+    authDomain: 'servifino.firebaseapp.com',
+    storageBucket: 'servifino.firebasestorage.app',
+    measurementId: 'G-XB52G96H7X',
+
+
+
+
+    };
+    import firebase from 'firebase/compat/app';
+
+    const app = initializeApp(firebaseConfig);
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer=""></script>
+
+
+
+</head>
+<body>
+
+
+
+
+<script>
+  window.addEventListener('load', function (ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+          entrypointUrl: "main.dart.js?v=" + serviceWorkerVersion,
+          serviceWorker: {
+              serviceWorkerVersion: serviceWorkerVersion,
+          },
+          onEntrypointLoaded: function (engineInitializer) {
+              engineInitializer.initializeEngine().then(function (appRunner) {
+                  appRunner.runApp();
+              });
+          }
+      });
+  });
+
+</script>
+
+
+
+
+</body>
+</html>

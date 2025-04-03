@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "573229922917",
+    "project_id": "servifino",
+    "storage_bucket": "servifino.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:573229922917:android:0c7fbe813929a6d242248c",
+        "android_client_info": {
+          "package_name": "dev.savinofiore.servifino.servifino"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA51ivw-Jkuf9Fb_MRkGn_Ds2jnn7JXR68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

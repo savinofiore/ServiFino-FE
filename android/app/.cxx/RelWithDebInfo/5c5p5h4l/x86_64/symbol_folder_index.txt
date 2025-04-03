@@ -1,0 +1,1 @@
+/Users/savinofiore/IdeaProjects/ServiFino-FE/servifino/build/app/intermediates/cxx/RelWithDebInfo/5c5p5h4l/obj/x86_64
