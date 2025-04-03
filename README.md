@@ -10,7 +10,7 @@ L'app per prenotare personale nel settore terziario.
 ---
 
 ## Struttura dell’Applicazione
-![img_1.png](servifino/img_1.png)
+![img_1.png](img_1.png)
 
 Questo diagramma illustra il flusso logico dell’app, a partire dallo **Start** fino alle diverse schermate in base al ruolo dell’utente (Owner o Worker).
 
